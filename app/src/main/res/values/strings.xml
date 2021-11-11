@@ -9,4 +9,6 @@
     <string name="date">Date</string>
     <string name="name_default">Milo</string>
     <string name="date_default">10.10.2021</string>
+    <string name="pet_info">Pet Info</string>
+    <string name="location">Location</string>
 </resources>
