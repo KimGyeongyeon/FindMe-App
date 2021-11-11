@@ -7,4 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="here_sign">#FF8300</color>
+    <color name="not_here_sign">#088FFA</color>
 </resources>
