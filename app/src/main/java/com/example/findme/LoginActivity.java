@@ -11,11 +11,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class LoginActivity extends AppCompatActivity {
+
+    private FirebaseUser currentUser;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
 
         Button loginButton = findViewById(R.id.loginbtn);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -31,5 +38,18 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (currentUser != null) {
+            SendUserToMainActivity();
+        }
+    }
+
+    private void SendUserToMainActivity() {
+        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(loginIntent);
     }
 }
