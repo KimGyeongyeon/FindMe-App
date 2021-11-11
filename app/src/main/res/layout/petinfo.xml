@@ -224,7 +224,7 @@
                         android:text="@string/no_string" />
                 </LinearLayout>
 
-                
+
             </LinearLayout>
         </ScrollView>
 
