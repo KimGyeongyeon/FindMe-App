@@ -23,7 +23,9 @@
             android:label="@string/app_name">
         </activity>
 
-        <activity android:name=".LoginActivity2"
+        <activity android:name=".LoginActivity2"/>
+        <activity android:name=".HereReportActivity"/>
+        <activity android:name=".PetInfoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,8 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HereRepotActivity"/>
-        <activity android:name=".PetInfoActivity" />
         <activity android:name=".RegisterActivity" />
     </application>
 
