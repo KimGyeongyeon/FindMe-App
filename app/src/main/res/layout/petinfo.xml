@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_weightsum="10"
+                    android:layout_weight="10"
                     >
 
                     <TextView
