@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class PetInfoActivity extends AppCompatActivity {
 
@@ -32,9 +33,8 @@ public class PetInfoActivity extends AppCompatActivity {
         here_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HereReportActivity.class);
-                startActivity(intent);
-                finish();
+                Toast toast = Toast.makeText(getBaseContext(), "여기 없애줘 경연아.", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
 
