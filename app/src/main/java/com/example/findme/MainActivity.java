@@ -1,5 +1,6 @@
 package com.example.findme;
 
+import android.Manifest;
 import android.app.Activity;
 
 import android.content.DialogInterface;
@@ -82,6 +83,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean locationPermissionGranted;
 
+    // Camera Permission
+    private static final int TAKE_PICTURE = 1;
+    private static final int PERMISSIONS_REQUEST_CAMERA = 2;
+    private  boolean cameraPermissionGranted;
+
+    // result for postActivity
+    private static final int POST_SUCCESS = 2;
+
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location lastKnownLocation;
@@ -96,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+
+    // Views
+    ImageView post_button;
+    ImageView game_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,15 +130,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.main);
 
         // Set buttons to other activities.
-        final ImageView post_button = findViewById(R.id.post_icon);
-        final ImageView game_button = findViewById(R.id.game_icon);
+        post_button = findViewById(R.id.post_icon);
+        game_button = findViewById(R.id.game_icon);
 
         post_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HereReportActivity.class);
-                startActivity(intent);
-                finish();
+                if (cameraPermissionGranted) {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, TAKE_PICTURE);
+                }
+                else {
+                    getCameraPermission();
+                }
             }
         });
 
@@ -151,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // [END maps_current_place_map_fragment]
     }
     // [END maps_current_place_on_create]
-
 
     /**
      * Saves the state of the map when the activity is paused.
@@ -270,6 +286,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // [END maps_current_place_location_permission]
 
     /**
+     * Prompts the user for permission to use the device location.
+     */
+    // [START maps_current_place_location_permission]
+    private void getCameraPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            cameraPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_CAMERA);
+        }
+    }
+    // [END maps_current_place_location_permission]
+
+    /**
      * Handles the result of the request for location permissions.
      */
     // [START maps_current_place_on_request_permissions_result]
@@ -286,6 +325,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationPermissionGranted = true;
+                }
+            }
+            case PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    cameraPermissionGranted = true;
                 }
             }
         }
@@ -329,5 +375,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
     // [END maps_current_place_update_location_ui]
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        switch (requestCode) {
+            case TAKE_PICTURE:
+                if (resultCode == RESULT_OK && intent.hasExtra("data")) {
+                    Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+                    Intent postIntent = new Intent(MainActivity.this, HereReportActivity.class);
+                    postIntent.putExtra("bitmap", bitmap);
+                    startActivity(postIntent);
+                }
+            break;
+        }
+    }
 }
 
