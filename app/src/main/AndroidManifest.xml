@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity2" />
-        <activity android:name=".HereReportActivity"/>
+        <activity android:name=".PostActivity"/>
         <activity android:name=".PetInfoActivity" />
         <activity android:name=".RegisterActivity" />
     </application>

@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class HereReportActivity extends Activity {
+public class PostActivity extends Activity {
 
     TextView back_button;
     CardView location_button;
@@ -30,7 +30,7 @@ public class HereReportActivity extends Activity {
         Intent intent = getIntent();
         Bitmap image = (Bitmap)intent.getExtras().get("bitmap");
 
-        setContentView(R.layout.here);
+        setContentView(R.layout.post);
 
         back_button = findViewById(R.id.back);
         location_button = findViewById(R.id.location_card);
