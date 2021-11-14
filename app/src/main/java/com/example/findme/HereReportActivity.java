@@ -2,9 +2,11 @@ package com.example.findme;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,15 +16,29 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class HereReportActivity extends Activity {
 
+    TextView back_button;
+    CardView location_button;
+    ConstraintLayout image_button;
+    Button submit_button;
+    ImageView camera_image;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Get Image from camera activity.
+        Intent intent = getIntent();
+        Bitmap image = (Bitmap)intent.getExtras().get("bitmap");
+
         setContentView(R.layout.here);
 
-        final TextView back_button = findViewById(R.id.back);
-        final CardView location_button = findViewById(R.id.location_card);
-        final ConstraintLayout image_button = findViewById(R.id.camera_layout);
-        final Button submit_button = findViewById(R.id.submit_button);
+        back_button = findViewById(R.id.back);
+        location_button = findViewById(R.id.location_card);
+        image_button = findViewById(R.id.camera_layout);
+        submit_button = findViewById(R.id.submit_button);
+        camera_image = findViewById(R.id.camera_image);
+
+        if (image != null) camera_image.setImageBitmap(image);
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
