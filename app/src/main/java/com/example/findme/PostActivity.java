@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,8 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class PostActivity extends Activity {
+public class PostActivity extends Activity implements AdapterView.OnItemSelectedListener{
 
+    Spinner missing_spinner;
     TextView back_button;
     CardView location_button;
     ConstraintLayout image_button;
@@ -32,11 +35,21 @@ public class PostActivity extends Activity {
 
         setContentView(R.layout.post);
 
+        // test missingContanier class
+        missingContainer test = new missingContainer(image, "test");
+        missingContainer missing[]= {test};
+
+        missing_spinner = findViewById(R.id.spinner);
         back_button = findViewById(R.id.back);
         location_button = findViewById(R.id.location_card);
         image_button = findViewById(R.id.camera_layout);
         submit_button = findViewById(R.id.submit_button);
         camera_image = findViewById(R.id.camera_image);
+
+        // Adapt item Adapter for spinner
+        missing_spinner.setOnItemSelectedListener(this);
+        missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missing);
+        missing_spinner.setAdapter(missingAdapter);
 
         if (image != null) camera_image.setImageBitmap(image);
 
@@ -73,4 +86,11 @@ public class PostActivity extends Activity {
             }
         });
     }
+
+    // implement AdapterView.OnItemSelectedListener
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {}
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 }
