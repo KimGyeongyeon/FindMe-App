@@ -34,6 +34,9 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.heatmaps.Gradient;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.WeightedLatLng;
@@ -43,8 +46,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -122,7 +127,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
         ArrayList<HashMap<String, Object>> hereReports = null;
 
         try {
-            hereReports = readItems3(R.raw.here);
+            getHereReports(R.raw.here);
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), "Problem reading here reports.", Toast.LENGTH_LONG).show();
         }
@@ -137,7 +142,6 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
         });
 
     }
-
 
     private void addNotHereReports() {
         List<LatLng> latLngs = null;
@@ -156,7 +160,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
         // Get the data: latitude/longitude positions of police stations.
         try {
 //            latLngs = readItems(R.raw.police_stations);
-            weightedLatLngs = readItems2(R.raw.not_here);
+            weightedLatLngs = getNotHereReports(R.raw.not_here);
 //            Toast.makeText(getApplicationContext(), weightedLatLngs.toString(), Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), "Problem reading not here reports.", Toast.LENGTH_LONG).show();
@@ -189,7 +193,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
         return result;
     }
 
-    private Collection<WeightedLatLng> readItems2 (int resource) throws JSONException {
+    private Collection<WeightedLatLng> getNotHereReports (int resource) throws JSONException {
         Collection<WeightedLatLng> result = new ArrayList<>();
         InputStream inputStream = getApplicationContext().getResources().openRawResource(resource);
         String json = new Scanner(inputStream).useDelimiter("\\A").next();
@@ -204,7 +208,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
         return result;
     }
 
-    private ArrayList<HashMap<String, Object>> readItems3 (int resource) throws JSONException {
+    private void getHereReports (int resource) throws JSONException {
         ArrayList<HashMap<String, Object>> result = new ArrayList<>();
         InputStream inputStream = getApplicationContext().getResources().openRawResource(resource);
         String json = new Scanner(inputStream).useDelimiter("\\A").next();
@@ -222,7 +226,78 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             Marker hereMarker = map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(month + "." + day + " " + hour + ":" + min));
             hereMarker.setTag(img);
         }
-        return result;
+        return;
+    }
+
+    private void getNotHereReportsFromFirebase () {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("notHere").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    Collection<WeightedLatLng> weightedLatLngs = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Firebase", document.getId() + " => " + document.getData());
+
+                        LatLng latLng = new LatLng(document.getGeoPoint("latLng").getLatitude(), document.getGeoPoint("latLng").getLongitude());
+                        double weight = document.getDouble("weight");
+                        weightedLatLngs.add(new WeightedLatLng(latLng, weight));
+                    }
+
+                    // Create the gradient.
+                    int[] colors = {
+                            Color.rgb(102, 225, 0), // green
+                            Color.rgb(255, 0, 0)    // red
+                    };
+                    float[] startPoints = {
+                            0.2f, 1f
+                    };
+                    Gradient gradient = new Gradient(colors, startPoints);
+
+                    HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
+//                .data(latLngs)
+                            .weightedData(weightedLatLngs)
+                            .radius(50) //기본값 20, 10< <50
+//                .gradient(gradient)
+                            .build();
+
+                    // Add a tile overlay to the map, using the heat map tile provider.
+                    TileOverlay overlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void getHereReportsFromFirebase () {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("here").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Firebase", document.getId() + " => " + document.getData());
+
+                        LatLng latLng = new LatLng(document.getGeoPoint("latLng").getLatitude(), document.getGeoPoint("latLng").getLongitude());
+                        Date date = document.getDate("date");
+                        String img = document.getString("img");
+
+                        Marker hereMarker = map.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date).toString()));
+                        hereMarker.setTag(img);
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+        //수정 시 업데이트
     }
 
 
@@ -280,8 +355,9 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.getResult();
                             if (lastKnownLocation != null) {
-                                addNotHereReports();
-                                addHereReports();
+//                                addNotHereReports();
+                                getNotHereReportsFromFirebase();
+                                getHereReportsFromFirebase();
 
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastKnownLocation.getLatitude(),
