@@ -34,6 +34,7 @@
         <activity android:name=".HereReportActivity"/>
         <activity android:name=".PetInfoActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".PetInfoMapActivity" />
     </application>
 
 </manifest>

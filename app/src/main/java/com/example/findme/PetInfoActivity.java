@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class PetInfoActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class PetInfoActivity extends AppCompatActivity {
         final Button main_button = findViewById(R.id.main_bar);
         final Button here_button = findViewById(R.id.here_button);
         final Button not_here_button = findViewById(R.id.not_here_button);
+        final ImageView map_preview_image = findViewById(R.id.map_preview);
 
         main_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +45,15 @@ public class PetInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Send report and give toast.
                 // divide it into 2 functions.
+            }
+        });
+
+        map_preview_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //go to PetInfoMapActivity
+                Intent intent = new Intent(getBaseContext(), PetInfoMapActivity.class);
+                startActivity(intent);
             }
         });
 

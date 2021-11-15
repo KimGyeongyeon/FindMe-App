@@ -204,9 +204,8 @@
                     android:id="@+id/map_text_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     >
-
                     <TextView
                         android:id="@+id/textView7"
                         android:layout_width="70dp"
@@ -215,12 +214,14 @@
                         android:textAlignment="center"
                         android:text="@string/location"
                         android:textStyle="bold"/>
-                    <TextView
-                        android:id="@+id/location_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:text="@string/no_string" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_preview"
+                        android:src="@drawable/map_preview"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center"/>
                 </LinearLayout>
 
 
