@@ -2,16 +2,23 @@ package com.example.findme;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,13 +42,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.heatmaps.Gradient;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.WeightedLatLng;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -110,124 +124,19 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.petReportsMap);
         mapFragment.getMapAsync(this);
 
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Log.i("asdf", "10 seconds passed");
-            }
-        }, 0, 1000); //10000 ms = 10 second
+
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                Log.i("asdf", "10 seconds passed");
+//            }
+//        }, 0, 1000); //10000 ms = 10 second
 
         // [END maps_current_place_map_fragment]
     }
     // [END maps_current_place_on_create]
 
-
-    private void addHereReports() {
-        ArrayList<HashMap<String, Object>> hereReports = null;
-
-        try {
-            getHereReports(R.raw.here);
-        } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "Problem reading here reports.", Toast.LENGTH_LONG).show();
-        }
-
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                //Using position get Value from arraylist
-                Toast.makeText(getApplicationContext(), (String) marker.getTag(), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
-    }
-
-    private void addNotHereReports() {
-        List<LatLng> latLngs = null;
-        Collection<WeightedLatLng> weightedLatLngs = null;
-
-        // Create the gradient.
-        int[] colors = {
-                Color.rgb(102, 225, 0), // green
-                Color.rgb(255, 0, 0)    // red
-        };
-        float[] startPoints = {
-                0.2f, 1f
-        };
-        Gradient gradient = new Gradient(colors, startPoints);
-
-        // Get the data: latitude/longitude positions of police stations.
-        try {
-//            latLngs = readItems(R.raw.police_stations);
-            weightedLatLngs = getNotHereReports(R.raw.not_here);
-//            Toast.makeText(getApplicationContext(), weightedLatLngs.toString(), Toast.LENGTH_LONG).show();
-        } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "Problem reading not here reports.", Toast.LENGTH_LONG).show();
-        }
-
-        // Create a heat map tile provider, passing it the latlngs of the police stations.
-        HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
-//                .data(latLngs)
-                .weightedData(weightedLatLngs)
-                .radius(50) //기본값 20, 10< <50
-//                .gradient(gradient)
-                .build();
-
-        // Add a tile overlay to the map, using the heat map tile provider.
-        TileOverlay overlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
-    }
-
-    private List<LatLng> readItems(@RawRes int resource) throws JSONException {
-        List<LatLng> result = new ArrayList<>();
-        InputStream inputStream = getApplicationContext().getResources().openRawResource(resource);
-        String json = new Scanner(inputStream).useDelimiter("\\A").next();
-        JSONArray array = new JSONArray(json);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            double lat = object.getDouble("lat");
-            double lng = object.getDouble("lng");
-            double weight = object.getDouble("weight");
-            result.add(new LatLng(lat, lng));
-        }
-        return result;
-    }
-
-    private Collection<WeightedLatLng> getNotHereReports (int resource) throws JSONException {
-        Collection<WeightedLatLng> result = new ArrayList<>();
-        InputStream inputStream = getApplicationContext().getResources().openRawResource(resource);
-        String json = new Scanner(inputStream).useDelimiter("\\A").next();
-        JSONArray array = new JSONArray(json);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            double lat = object.getDouble("lat");
-            double lng = object.getDouble("lng");
-            double weight = object.getDouble("weight");
-            result.add(new WeightedLatLng(new LatLng(lat, lng), weight));
-        }
-        return result;
-    }
-
-    private void getHereReports (int resource) throws JSONException {
-        ArrayList<HashMap<String, Object>> result = new ArrayList<>();
-        InputStream inputStream = getApplicationContext().getResources().openRawResource(resource);
-        String json = new Scanner(inputStream).useDelimiter("\\A").next();
-        JSONArray array = new JSONArray(json);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            double lat = object.getDouble("lat");
-            double lng = object.getDouble("lng");
-            String img = object.getString("img");
-            int month = object.getInt("month");
-            int day = object.getInt("day");
-            int hour = object.getInt("hour");
-            int min = object.getInt("min");
-
-            Marker hereMarker = map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(month + "." + day + " " + hour + ":" + min));
-            hereMarker.setTag(img);
-        }
-        return;
-    }
 
     private void getNotHereReportsFromFirebase () {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -288,9 +197,22 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
                         Marker hereMarker = map.addMarker(new MarkerOptions()
                                 .position(latLng)
-                                .title(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date).toString()));
-                        hereMarker.setTag(img);
+                                .title(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date).toString())
+                        );
+                        hereMarker.setTag(document.getId());
+//                        hereMarker.showInfoWindow();
                     }
+
+                    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            //Using position get Value from arraylist
+//                            Toast.makeText(getApplicationContext(), (String) marker.getTag(), Toast.LENGTH_SHORT).show();
+                            showBottomSheetDialog((String) marker.getTag());
+                            return false;
+                        }
+                    });
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
@@ -298,6 +220,69 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
         //수정 시 업데이트
+    }
+
+
+    private void showBottomSheetDialog(String docId){
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.here_report_bottom_sheet_dialog_layout);
+
+        LinearLayout download = bottomSheetDialog.findViewById(R.id.here_report_info);
+        ImageView imageView = bottomSheetDialog.findViewById(R.id.here_report_view_img);
+        TextView textViewId = bottomSheetDialog.findViewById(R.id.here_report_view_id);
+        TextView textViewDate = bottomSheetDialog.findViewById(R.id.here_report_view_date);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("here").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+//                    Toast.makeText(getApplicationContext(), docId, Toast.LENGTH_SHORT).show();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if(document.getId().equals(docId)){
+//                            Toast.makeText(getApplicationContext(), "asdf", Toast.LENGTH_SHORT).show();
+
+                            ///여기에서 가져오기!!!!
+                            String imgPath = document.getString("img");
+                            Date date = document.getDate("date");
+                            String userMail = document.getString("userMail");
+                            String[] temp = userMail.split("@");
+                            String userId = temp[0];
+
+                            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                            StorageReference photoReference = storageReference.child(imgPath);
+                            photoReference.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    imageView.setImageBitmap(bitmap);
+                                    textViewId.setText(temp[0]);
+                                    textViewDate.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(date).toString() + "\n" + DateFormat.getTimeInstance(DateFormat.SHORT).format(date).toString());
+                                    bottomSheetDialog.show();
+                                }
+                            });
+
+//                            Glide.with(getApplicationContext()).asBitmap().load(photoReference).into(imageView);
+                        }
+
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+
+        Button btn = bottomSheetDialog.findViewById(R.id.see_more_btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PetInfoMapActivity.this, ShowHereReportsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
