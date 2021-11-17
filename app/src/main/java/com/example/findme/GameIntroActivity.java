@@ -8,7 +8,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class GameIntroActivity extends AppCompatActivity {
+
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+    private String uid;
+    private FirebaseFirestore db;
 
     TextView back_button;
     TextView my_score;
@@ -22,6 +31,12 @@ public class GameIntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_intro);
+
+        // Get informations from firebase.
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        uid = currentUser.getUid();
+        db = FirebaseFirestore.getInstance();
 
         back_button = findViewById(R.id.back);
         start_game = findViewById(R.id.start);
@@ -51,5 +66,11 @@ public class GameIntroActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
