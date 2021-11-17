@@ -27,7 +27,7 @@ public class missingAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return flags[position];
     }
 
     @Override
