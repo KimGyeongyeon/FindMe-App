@@ -1,41 +1,52 @@
 package com.example.findme;
 
+import android.location.Location;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class PetInfo {
     private String date;
-    private String[] profile_images = {"a","a","a","a"};
-    private double[] location = {36.0, 127.0};
+    private ArrayList<String> img;
+    private Location location;
     private String name;
-    private String detail;
+    private String profile;
 
 
     public PetInfo(){
-
-    }
-
-    public PetInfo(PetInfo p){
-        this.date = p.getDate();
-        this.name = p.getName();
-        this.detail = p.getDetail();
-        this.location[0] = p.getLocation()[0];
-        this.location[1] = p.getLocation()[1];
+        super();
+        this.location = new Location("LocationManager#GPS_PROVIDER");
+        this.img = new ArrayList<>(4);
         for(int i=0 ; i<4; i++){
-            this.profile_images[i] = p.getImage()[i];
+            this.img.
+                    add("https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FGold%2Fgold_fail_casejpg.jpg?alt=media&token=b74d2b08-bddf-4b25-a241-c23f6237216a");
         }
     }
 
+//    public PetInfo(PetInfo p){
+//        this.date = p.getDate();
+//        this.name = p.getName();
+//        this.detail = p.getDetail();
+//        this.location[0] = p.getLocation()[0];
+//        this.location[1] = p.getLocation()[1];
+//        for(int i=0 ; i<4; i++){
+//            this.profile_images[i] = p.getImage()[i];
+//        }
+//    }
+//
     public PetInfo( Date date, String[] profile_images,
-                    double[] location, String name, String detail){
+                    double[] location, String name, String profile){
         super();
         this.date = String.valueOf(date);
         this.name = name;
-        this.detail = detail;
-        this.location[0] = location[0];
-        this.location[1] = location[1];
+        this.profile = profile;
+        this.location = new Location("LocationManager#GPS_PROVIDER");
+        this.location.setLatitude(location[0]);
+        this.location.setLongitude(location[1]);
+        this.img = new ArrayList<>(4);
         for(int i=0 ; i<4; i++){
-            this.profile_images[i] = profile_images[i];
+            this.img.add( profile_images[i]);
         }
 
     }
@@ -72,31 +83,31 @@ public class PetInfo {
         this.date = String.valueOf(date);
     }
 
-    public String getDetail(){
-        return detail;
+    public String getProfile(){
+        return profile;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
-    public double[] getLocation(){
+    public Location getLocation(){
         return location;
     }
 
-    public void setLocation(float[] location) {
-        this.location[0] = location[0];
-        this.location[1] = location[1];
+    public void setLocation(double[] location) {
+        this.location.setLatitude(location[0]);
+        this.location.setLongitude(location[1]);
     }
 
-    public String[] getImage(){
+    public ArrayList<String> getImage(){
         // image load library url을 바로 연결할 수 있음.
-        return profile_images;
+        return img;
     }
 
-    public void setProfile_images(String[] profile_images) {
+    public void setImg(String[] img) {
         for(int i = 0 ; i<4 ; i++) {
-            this.profile_images[i] = profile_images[i];
+            this.img.add(img[i]);
         }
     }
 }
