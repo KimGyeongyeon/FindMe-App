@@ -67,12 +67,22 @@
         app:layout_constraintTop_toBottomOf="@+id/count_layout"
         app:layout_constraintBottom_toTopOf="@+id/button_layout">
 
+        <TextView
+            android:id="@+id/pet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="12pt"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/original_picture_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/test_picture_layout"
+            app:layout_constraintBottom_toTopOf="@+id/compare_picture_layout"
             android:padding="20dp">
 
             <ImageView
@@ -84,7 +94,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/test_picture_layout"
+            android:id="@+id/compare_picture_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -92,7 +102,7 @@
             android:padding="20dp">
 
             <ImageView
-                android:id="@+id/test_image"
+                android:id="@+id/compare_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/empty_image"/>
@@ -108,7 +118,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/right_button_layout"
+            android:id="@+id/correct_button_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -117,7 +127,7 @@
             app:layout_constraintRight_toLeftOf="@+id/wrong_button_layout">
 
             <ImageButton
-                android:id="@+id/right_button"
+                android:id="@+id/correct_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_check"/>
@@ -131,7 +141,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             android:padding="10dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/right_button_layout">
+            app:layout_constraintLeft_toRightOf="@+id/correct_button_layout">
 
             <ImageButton
                 android:id="@+id/wrong_button"
