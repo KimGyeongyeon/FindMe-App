@@ -1,8 +1,12 @@
 package com.example.findme;
 
+import android.content.Context;
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,13 +48,13 @@ public class PetInfoActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     // Firebase variable
-    private FirebaseDatabase database;
+    //private FirebaseDatabase database;
     private DatabaseReference ref;
-    private ArrayList<PetInfo> petArray;
+    private FirebaseFirestore database;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("PetInfoActivity-fire","Updated 20:23");
+        Log.d("PetInfoActivity-fire", "Updated 22:30");
         super.onCreate(savedInstanceState);
 
         // 1) View setting
@@ -65,101 +70,33 @@ public class PetInfoActivity extends AppCompatActivity {
         images.add(findViewById(R.id.imageView_4));
 
         // 2) Initialize Firebase-related variables
-        petArray = new ArrayList<>(); //Include Every Pet information
-        database = FirebaseDatabase.getInstance(); // Connect FireBase Here
-        ref = database.getReference("pet");// Connect DB table
-
-// Ver 2. Guide suggested
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    //PetInfo object 형태로 값 저장
-                    Log.d("PetInfoActivity", "sibal");
-                    PetInfo info = dataSnapshot.getValue(PetInfo.class);
-                    petArray.add(info);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("PetInfoActivity-74", String.valueOf(error.toException()));
-            }
-        };
-        ref.addValueEventListener(postListener);
-
-// ver 1. Use ref directly
-//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                petArray.clear();
-//                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    Log.d("sibal", "sibal");
-//                    //PetInfo object 형태로 값 저장
-//                    PetInfo info = dataSnapshot.getValue(PetInfo.class);
-//                    petArray.add(info);
-//                }
-//                Log.d("PetInfoActivity-69", String.format("petArray size : %d",petArray.size()));
-//                PetInfoActivity.this.notify();
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.e("PetInfoActivity-74", String.valueOf(error.toException()));
-//            }
-//        });
-
+//        petArray = new ArrayList<>(); //Include Every Pet information
+//        database = FirebaseDatabase.getInstance(); // Connect FireBase Here
+//        ref = database.getReference("storage/pet");// Connect DB table
 
         // 3) Distribute the info to view
-        // 요청한 pet의 정보를 찾고 그에 해당하는 index를 설정하는 방식으로 변경하자.
-
-        if(petArray.size()>0){
-            int num = 0;
-            for(ImageView i : images) {
-                Glide.with(i).load(petArray.get(0).getImage().get(num))
-                        .into(i);
-                num++;
-            }
-            name.setText(petArray.get(0).getName());
-            date.setText(petArray.get(0).getDate());
-            detail.setText(petArray.get(0).getProfile());
-        }else{
-            Log.d("PetInfo-111",
-                    String.format("petArray size : %d",petArray.size()));
-
-            // Use sample data
-            PetInfo sample = new PetInfo();
-            sample = sample.sample_data();
-            int num = 0;
-            for(ImageView i : images) {
-                Glide.with(i).load(sample.getImage().get(num))
-                        .into(i);
-                num++;
-            }
-            name.setText(sample.getName());
-            date.setText(sample.getDate());
-            detail.setText(sample.getProfile());
-
+        // Use sample data
+        PetInfo sample = new PetInfo();
+        sample = sample.sample_data();
+        int num = 0;
+        for (ImageView i : images) {
+            Glide.with(i).load(sample.getImage().get(num))
+                    .into(i);
+            num++;
         }
-
-
-
-
-
+        name.setText(sample.getName());
+        date.setText(sample.getDate());
+        detail.setText(sample.getProfile());
 
         /*
          *
-         *   a ) Click Event
+         *   Click Event
          *
          */
 
-
-        final Button main_button = findViewById(R.id.main_bar);
-        final Button not_here_button = findViewById(R.id.not_here_button);
-
         //Main Button Event
 
+        final Button main_button = findViewById(R.id.main_bar);
         main_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,26 +107,27 @@ public class PetInfoActivity extends AppCompatActivity {
         });
 
         //Not Here event
+
+        final Button not_here_button = findViewById(R.id.not_here_button);
         getLocationPermission();
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         not_here_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(first_click[0]){
+                if (first_click[0]) {
                     first_click[0] = false;
                     // Send report and give toast.
                     // divide it into 2 functions.
                     Toast toast = Toast.makeText(getBaseContext(), "Success! Thank you for participation.", Toast.LENGTH_LONG);
                     toast.show();
 
-                    //현재위치 double[], weight=5를 보낸다.
-
+                    //서버로 위치 전송
                     report_not_here();
-                }
-                else{
+
+                } else {
                     Toast toast = Toast.makeText(getBaseContext(), "Please check location of the pet.", Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -198,6 +136,11 @@ public class PetInfoActivity extends AppCompatActivity {
 
     }
     // [END OnCreate]
+    /*
+     *
+     *   Not Here support methods
+     *
+     */
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -205,64 +148,11 @@ public class PetInfoActivity extends AppCompatActivity {
         outState.putParcelable(KEY_LOCATION, lastKnownLocation);
     }
 
-    /*
-     *
-     *   Not Here support methods
-     *
-     */
-
     public void report_not_here() {
-        database = FirebaseDatabase.getInstance(); // Connect FireBase Here
-        DatabaseReference ref;
-        ref = database.getReference("notHere");
+
         NotHere report = new NotHere();
 
         // 1) 현재 위치 report에 저장하기
-
-        final Location[] ret_value = new Location[1]; //we will save return value here
-        ret_value[0] = new Location("LocationManager#GPS_PROVIDER");
-        try {
-            if (locationPermissionGranted) {
-
-
-                //Get location
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-
-                            lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                Log.d("PetInfo-location","Got recent location");
-                                ret_value[0] = new Location(lastKnownLocation);
-                            }
-                        } else {
-                            Log.d("PetInfo-location", "Current location is null. Using defaults.");
-                            ret_value[0].setLatitude(36.181818);
-                            ret_value[0].setLongitude(127.351818);
-                        }
-                    }
-                });
-
-
-            }
-            else{
-                Log.d("PetInfo-location", "Location permission denied");
-                ret_value[0] = new Location("LocationManager#GPS_PROVIDER");
-                ret_value[0].setLatitude(36.181818);
-                ret_value[0].setLongitude(127.351818);
-
-            }
-
-        } catch (SecurityException e)  {
-            Log.e("PetInfo-location: %s", e.getMessage(), e);
-        }
-
-
-        report.setLocation(ret_value[0]);
-
 
 
         // 2) weight 설정하기
@@ -274,10 +164,13 @@ public class PetInfoActivity extends AppCompatActivity {
         String docs_name = format.format(cur_time);
 //        String docs_name = "kzcdO4y49mLKaeiaVWmM";
 
-        Log.d("PetInfoActivity", "send report to firebase "+docs_name);
-        ref.child(docs_name).setValue(report);
-    }
+        Log.d("PetInfoActivity", "send report to firebase " + docs_name);
 
+        // 4) Firebase로 전송
+        database = FirebaseFirestore.getInstance(); // Connect FireBase Here
+        //ref = database.getReference("findme-a2f27");
+        database.collection("notHere").document(docs_name).set(report);
+    }
 //
 //    private Location current_location() {
 //        /*

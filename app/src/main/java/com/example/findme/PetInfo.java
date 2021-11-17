@@ -54,14 +54,14 @@ public class PetInfo {
     public PetInfo sample_data(){
         Date test_date = new Date(2021, 10, 14, 12, 27, 31);
         String[] url = {
-                "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FGold%2Fgold_fail_casejpg.jpg?alt=media&token=b74d2b08-bddf-4b25-a241-c23f6237216a",
-                "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FGold%2Fgold_fail_casejpg.jpg?alt=media&token=b74d2b08-bddf-4b25-a241-c23f6237216a",
-                "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FGold%2Fgold_fail_casejpg.jpg?alt=media&token=b74d2b08-bddf-4b25-a241-c23f6237216a",
-                "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FGold%2Fgold_fail_casejpg.jpg?alt=media&token=b74d2b08-bddf-4b25-a241-c23f6237216a"
+                "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FRudy%2FRudy_1.PNG?alt=media&token=55441885-a6f5-4057-a466-62f0c8d68713",
+        "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FRudy%2FRudy_2.PNG?alt=media&token=1462d18d-129b-4004-889a-d32f7f62d899",
+        "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FRudy%2FRudy_3.PNG?alt=media&token=fd9d959b-39c2-4f53-9405-305158f0fc66",
+        "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FRudy%2FRudy_4.PNG?alt=media&token=58329336-5b9c-4341-88fb-f407e1f2b76f"
         };
         double[] loc_arr = {36.368155, 127.364914};
         return new PetInfo(test_date, url, loc_arr,
-                "Guemi","I lost him in front of E3. He is wearing red ribbon. Please find himTT ");
+                "Rudy","I lost her in front of E3. He is wearing a yellow lead. Please find herTT ");
     }
 
     public String getName(){
