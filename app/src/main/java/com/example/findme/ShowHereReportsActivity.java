@@ -3,6 +3,7 @@ package com.example.findme;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,19 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 public class ShowHereReportsActivity extends AppCompatActivity {
@@ -70,6 +76,26 @@ public class ShowHereReportsActivity extends AppCompatActivity {
             }
         };
 
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) { return; }
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            adapter.notifyDataSetChanged();
+                            break;
+                        case MODIFIED:
+                            adapter.notifyDataSetChanged();
+                            break;
+                        case REMOVED:
+                            adapter.notifyDataSetChanged();
+                            break;
+                    }
+                }
+            }
+        });
 
         recyclerView.setAdapter(adapter);
 

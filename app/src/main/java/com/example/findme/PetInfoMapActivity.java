@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -45,7 +46,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -139,8 +146,70 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
 
     private void getNotHereReportsFromFirebase () {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("notHere").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+        Query query = FirebaseFirestore.getInstance().collection("notHere");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    Collection<WeightedLatLng> weightedLatLngs = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Firebase", document.getId() + " => " + document.getData());
+
+                        LatLng latLng = new LatLng(document.getGeoPoint("latLng").getLatitude(), document.getGeoPoint("latLng").getLongitude());
+                        double weight = document.getDouble("weight");
+                        weightedLatLngs.add(new WeightedLatLng(latLng, weight));
+                    }
+
+                    // Create the gradient.
+                    int[] colors = {
+                            Color.rgb(102, 225, 0), // green
+                            Color.rgb(255, 0, 0)    // red
+                    };
+                    float[] startPoints = {
+                            0.2f, 1f
+                    };
+                    Gradient gradient = new Gradient(colors, startPoints);
+
+                    HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
+//                .data(latLngs)
+                            .weightedData(weightedLatLngs)
+                            .radius(50) //기본값 20, 10< <50
+//                .gradient(gradient)
+                            .build();
+
+                    // Add a tile overlay to the map, using the heat map tile provider.
+                    TileOverlay overlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) { return; }
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            addHeatMap();
+                            break;
+                        case MODIFIED:
+                            break;
+                        case REMOVED:
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void addHeatMap(){
+        Query query = FirebaseFirestore.getInstance().collection("notHere");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -182,12 +251,14 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void getHereReportsFromFirebase () {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("here").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query query = FirebaseFirestore.getInstance().collection("here");
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Firebase", document.getId() + " => " + document.getData());
 
@@ -219,7 +290,68 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                 }
             }
         });
+
         //수정 시 업데이트
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) { return; }
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+//                            adapter.notifyDataSetChanged();
+                            addMarker();
+                            break;
+                        case MODIFIED:
+                            break;
+                        case REMOVED:
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void addMarker(){
+        Query query = FirebaseFirestore.getInstance().collection("here");
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+//                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Firebase", document.getId() + " => " + document.getData());
+
+                        LatLng latLng = new LatLng(document.getGeoPoint("latLng").getLatitude(), document.getGeoPoint("latLng").getLongitude());
+                        Date date = document.getDate("date");
+                        String img = document.getString("img");
+
+                        Marker hereMarker = map.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date).toString())
+                        );
+                        hereMarker.setTag(document.getId());
+//                        hereMarker.showInfoWindow();
+                    }
+
+                    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            //Using position get Value from arraylist
+//                            Toast.makeText(getApplicationContext(), (String) marker.getTag(), Toast.LENGTH_SHORT).show();
+                            showBottomSheetDialog((String) marker.getTag());
+                            return false;
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+            }
+        });
     }
 
 
@@ -321,6 +453,11 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
     }
     // [END maps_current_place_on_map_ready]
 
+    private void getFirebaseDatas(){
+        getNotHereReportsFromFirebase();
+        getHereReportsFromFirebase();
+    }
+
     /**
      * Gets the current location of the device, and positions the map's camera.
      */
@@ -340,9 +477,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.getResult();
                             if (lastKnownLocation != null) {
-//                                addNotHereReports();
-                                getNotHereReportsFromFirebase();
-                                getHereReportsFromFirebase();
+                                getFirebaseDatas();
 
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastKnownLocation.getLatitude(),
