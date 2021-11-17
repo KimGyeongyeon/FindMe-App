@@ -256,7 +256,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                                 public void onSuccess(byte[] bytes) {
                                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                     imageView.setImageBitmap(bitmap);
-                                    textViewId.setText(temp[0]);
+                                    textViewId.setText("by " + temp[0]);
                                     textViewDate.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(date).toString() + "\n" + DateFormat.getTimeInstance(DateFormat.SHORT).format(date).toString());
                                     bottomSheetDialog.show();
                                 }

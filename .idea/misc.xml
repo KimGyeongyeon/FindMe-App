@@ -7,11 +7,15 @@
         <entry key="app/src/main/res/layout/group_item.xml" value="0.1983695652173913" />
         <entry key="app/src/main/res/layout/here.xml" value="0.1" />
         <entry key="app/src/main/res/layout/here_report_bottom_sheet_dialog_layout.xml" value="0.46979166666666666" />
+        <entry key="app/src/main/res/layout/here_report_card.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/here_report_cardview.xml" value="0.22847011144883486" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.17325227963525835" />
         <entry key="app/src/main/res/layout/login.xml" value="0.14895833333333333" />
         <entry key="app/src/main/res/layout/main.xml" value="0.13737945556640624" />
+        <entry key="app/src/main/res/layout/person.xml" value="0.3069362519579677" />
         <entry key="app/src/main/res/layout/petinfo.xml" value="0.13229166666666667" />
         <entry key="app/src/main/res/layout/petinfomap.xml" value="0.13229166666666667" />
-        <entry key="app/src/main/res/layout/show_here_reports.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/show_here_reports.xml" value="0.20749206803531703" />
       </map>
     </option>
   </component>
