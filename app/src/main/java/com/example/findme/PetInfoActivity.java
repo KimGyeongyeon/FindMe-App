@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,7 +55,7 @@ public class PetInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("PetInfoActivity-fire", "Updated 22:30");
+        Log.d("PetInfoActivity-fire", "Updated 23:24");
         super.onCreate(savedInstanceState);
 
         // 1) View setting
@@ -149,27 +150,43 @@ public class PetInfoActivity extends AppCompatActivity {
     }
 
     public void report_not_here() {
-
-        NotHere report = new NotHere();
+        Log.d("PetInfo-location", "Check permission");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            getLocationPermission(); }
 
         // 1) 현재 위치 report에 저장하기
 
+        NotHere report = new NotHere();
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+//                             2) weight 설정하기
+                                    report.setLocation(location);
+                                    report.setWeight(5);
 
-        // 2) weight 설정하기
-        report.setWeight(5);
+                                    // 3) 문서 이름 정하기
+                                    Date cur_time = new Date();
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_kkmmss");
+                                    String docs_name = format.format(cur_time);
 
-        // 3) 문서 이름 정하기
-        Date cur_time = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_kkmmss");
-        String docs_name = format.format(cur_time);
-//        String docs_name = "kzcdO4y49mLKaeiaVWmM";
+                                    Log.d("PetInfoActivity", "send report to firebase " + docs_name);
 
-        Log.d("PetInfoActivity", "send report to firebase " + docs_name);
+                                    // 4) Firebase로 전송
+                                    database = FirebaseFirestore.getInstance(); // Connect FireBase Here
+                                    //ref = database.getReference("findme-a2f27");
+                                    database.collection("notHere").document(docs_name).set(report);
+                        }
+                        else {
+                            Log.d("PetInfo-location", "location is null");
+                        }
+                    }
+                });
 
-        // 4) Firebase로 전송
-        database = FirebaseFirestore.getInstance(); // Connect FireBase Here
-        //ref = database.getReference("findme-a2f27");
-        database.collection("notHere").document(docs_name).set(report);
+
     }
 //
 //    private Location current_location() {
