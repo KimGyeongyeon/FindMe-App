@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.geojson.GeoJsonPoint;
 
 import java.util.ArrayList;
 import java.util.List;
