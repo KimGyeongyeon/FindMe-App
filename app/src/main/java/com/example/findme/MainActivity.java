@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // Views
     ImageView post_button;
     ImageView game_button;
+
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -315,6 +318,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     cameraPermissionGranted = true;
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, TAKE_PICTURE);
                 }
             }
         }
