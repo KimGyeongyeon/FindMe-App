@@ -99,54 +99,6 @@ public class GameActivity extends AppCompatActivity {
         gameRef = db.collection("game");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-//        Query query1 = petInfoRef.whereEqualTo("name", "Milo");
-//        query1.get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d("Firebase1", document.getId() + " => " + document.getData());
-//                                pet_name_ = (String) document.get("name");
-//                                pet_imgs =  (List<String>) document.get("img");
-//
-//                                // Set original.
-//                                Glide.with(original).load(pet_imgs.get(0)).into(original);
-//
-//                                // Set pet name.
-//                                pet_name.setText("Is this below " + pet_name_ + "?");
-//
-//                                // Second query
-//                                Query query2 = gameRef.whereEqualTo("name", "game0");
-//                                query2.get()
-//                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                                if (task.isSuccessful()) {
-//                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                                                        Log.d("Firebase2", document.getId() + " => " + document.getData());
-//                                                        game_imgs =  (List<String>) document.get("imgs");
-//
-//                                                        // Set compare List
-//                                                        compares = game_imgs;
-//                                                        compares.add(2, pet_imgs.get(1));
-//                                                        compares.add(5, pet_imgs.get(2));
-//                                                        compares.add(8, pet_imgs.get(3));
-//                                                        game_start();
-//                                                    }
-//                                                }
-//                                                else {
-//                                                    Log.d("Firebase", "download game fail");
-//                                                }
-//                                            }
-//                                        });
-//                            }
-//                        }
-//                        else {
-//                            Log.d("Firebase", "download pet fail");
-//                        }
-//                    }
-//                });
         Query query1 = petInfoRef.whereEqualTo("name", "Gold");
         query1.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
