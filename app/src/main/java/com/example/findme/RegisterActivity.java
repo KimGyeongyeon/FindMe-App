@@ -16,10 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -27,6 +35,9 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText UserEmail, UserPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
+    private String uid;
+    private FirebaseFirestore db;
+    private CollectionReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +78,24 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Log.d("Register", "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
-                        finish();
-                        SendUserToLoginActivity();
+
+                        // Post user information.
+                        db = FirebaseFirestore.getInstance();
+                        userRef = db.collection("user");
+                        Map<String, Object> data = new HashMap<>();
+                        String[] temp = email.split("@");
+                        data.put("NickName", temp[0]);
+                        data.put("Score", 0);
+                        data.put("Uid", user.getUid());
+                        userRef.add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d("FIREBASE", "create account");
+                                Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                                SendUserToLoginActivity();
+                            }
+                        });
                     }
                     else {
                         String message = task.getException().toString();

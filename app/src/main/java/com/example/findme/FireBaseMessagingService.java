@@ -31,7 +31,8 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "알림 메시지: " + remoteMessage.getNotification().getBody());
             String messageBody = remoteMessage.getNotification().getBody();
             String messageTitle = remoteMessage.getNotification().getTitle();
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, PetInfoActivity.class);
+            intent.putExtra("petId", "Rudy");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
             String channelId = "Channel ID";
