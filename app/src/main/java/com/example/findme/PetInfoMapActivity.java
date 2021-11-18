@@ -112,6 +112,8 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
         Intent intent = getIntent();
         petId = intent.getStringExtra("petId");
+        Toast.makeText(getApplicationContext(), petId, Toast.LENGTH_SHORT).show();
+
 
         // [START_EXCLUDE silent]
         // [START maps_current_place_on_create_save_instance_state]
@@ -151,12 +153,12 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
 
     private void getNotHereReportsFromFirebase () {
-        Query query = FirebaseFirestore.getInstance().collection("notHere");
+        Query query = FirebaseFirestore.getInstance().collection("pet").document(petId).collection("notHere");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     Collection<WeightedLatLng> weightedLatLngs = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Firebase", document.getId() + " => " + document.getData());
@@ -213,7 +215,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void addHeatMap(){
-        Query query = FirebaseFirestore.getInstance().collection("notHere");
+        Query query = FirebaseFirestore.getInstance().collection("pet").document(petId).collection("notHere");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -257,7 +259,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
     private void getHereReportsFromFirebase () {
 //        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Query query = FirebaseFirestore.getInstance().collection("here");
+        Query query = FirebaseFirestore.getInstance().collection("pet").document(petId).collection("here");
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
@@ -319,7 +321,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void addMarker(){
-        Query query = FirebaseFirestore.getInstance().collection("here");
+        Query query = FirebaseFirestore.getInstance().collection("pet").document(petId).collection("here");
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
@@ -370,7 +372,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
         TextView textViewDate = bottomSheetDialog.findViewById(R.id.here_report_view_date);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("here").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+        db.collection("pet").document(petId).collection("here").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -416,6 +418,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PetInfoMapActivity.this, ShowHereReportsActivity.class);
+                intent.putExtra("petId", petId);
                 startActivity(intent);
             }
         });
