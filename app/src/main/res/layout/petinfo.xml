@@ -152,7 +152,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="130dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/add_image" />
+                            app:srcCompat="@drawable/empty_image" />
 
                     </TableRow>
                 </TableLayout>
@@ -231,33 +231,22 @@
         <LinearLayout
             android:id="@+id/Bottom_bar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
+            android:gravity="center">
 
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/here_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="@color/here_sign"
-                android:text="@string/here"
-                android:textColor="@color/white"
-
-                />
 
             <Button
                 android:id="@+id/not_here_button"
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:backgroundTint="@color/not_here_sign"
                 android:text="@string/not_here"
                 android:textColor="@color/white"
+                android:gravity="center"
                 />
         </LinearLayout>
     </LinearLayout>
