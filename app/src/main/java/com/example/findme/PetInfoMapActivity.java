@@ -90,7 +90,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
         Intent intent = getIntent();
         petId = intent.getStringExtra("petId");
-        Toast.makeText(getApplicationContext(), petId, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), petId, Toast.LENGTH_SHORT).show();
 
 
         // [START_EXCLUDE silent]
@@ -228,7 +228,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                     // Add a tile overlay to the map, using the heat map tile provider.
                     TileOverlay overlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
             }
@@ -270,7 +270,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                     });
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
             }
@@ -332,7 +332,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                     });
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
             }
@@ -384,7 +384,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
             }

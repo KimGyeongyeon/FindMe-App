@@ -67,7 +67,7 @@ public class missingAdapter extends BaseAdapter {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 //이미지 로드 실패시
-                Toast.makeText(context, "spinner_icon_Failure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Image load failed. Please check the network", Toast.LENGTH_SHORT).show();
             }
         });
         name.setText(flags[i].name);
