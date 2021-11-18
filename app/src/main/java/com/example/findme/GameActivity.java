@@ -92,7 +92,7 @@ public class GameActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         petInfoRef = db.collection("pet");
         gameRef = db.collection("game");
-        Query query1 = petInfoRef.whereEqualTo("name", "milo");
+        Query query1 = petInfoRef.whereEqualTo("name", "Milo");
         query1.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

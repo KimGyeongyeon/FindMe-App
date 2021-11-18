@@ -1,9 +1,9 @@
 package com.example.findme;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +32,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 
 
 public class ShowHereReportsActivity extends AppCompatActivity {
@@ -41,15 +40,21 @@ public class ShowHereReportsActivity extends AppCompatActivity {
 //    recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 //    personAdapter adapter; // Create Object of the Adapter class
+    public String petId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_here_reports);
+
+        Intent intent = getIntent();
+        petId = intent.getStringExtra("petId");
+
         RecyclerView recyclerView = findViewById(R.id.recycler1);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Query query = FirebaseFirestore.getInstance().collection("here").orderBy("date", Query.Direction.DESCENDING);
+        Query query = FirebaseFirestore.getInstance().collection("pet").document(petId)
+                .collection("here").orderBy("date", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<HereReportCard> options = new FirestoreRecyclerOptions.Builder<HereReportCard>()
                 .setQuery(query, new SnapshotParser<HereReportCard>() {
@@ -71,7 +76,7 @@ public class ShowHereReportsActivity extends AppCompatActivity {
             @NonNull
             @Override
             public personHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.person, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.here_report_card, parent, false);
                 return new personHolder(view);
             }
         };

@@ -129,12 +129,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="130dp"
                             android:layout_weight="1"
+                            android:scaleType="centerCrop"
                             app:srcCompat="@drawable/empty_image" />
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent"/>
+
                         <ImageView
                             android:id="@+id/imageView_2"
                             android:layout_width="wrap_content"
                             android:layout_height="130dp"
                             android:layout_weight="1"
+                            android:scaleType="centerCrop"
                             app:srcCompat="@drawable/empty_image" />
                     </TableRow>
 
@@ -146,12 +152,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="130dp"
                             android:layout_weight="1"
+                            android:scaleType="centerCrop"
                             app:srcCompat="@drawable/empty_image" />
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent"/>
                         <ImageView
                             android:id="@+id/imageView_4"
                             android:layout_width="wrap_content"
                             android:layout_height="130dp"
                             android:layout_weight="1"
+                            android:scaleType="centerCrop"
                             app:srcCompat="@drawable/empty_image" />
 
                     </TableRow>
@@ -208,11 +219,11 @@
                     >
                     <TextView
                         android:id="@+id/textView7"
-                        android:layout_width="70dp"
+                        android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:gravity="center"
                         android:textAlignment="center"
-                        android:text="@string/location"
+                        android:text="See Reports"
                         android:textStyle="bold"/>
                     <ImageView
                         android:layout_width="match_parent"
@@ -223,8 +234,6 @@
                         android:adjustViewBounds="true"
                         android:layout_gravity="center"/>
                 </LinearLayout>
-
-
             </LinearLayout>
         </ScrollView>
 
