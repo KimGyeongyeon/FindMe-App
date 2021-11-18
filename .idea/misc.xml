@@ -5,6 +5,14 @@
       <map>
         <entry key="..\:/Users/Bastien/Desktop/FindMe-App/app/src/main/res/layout/main.xml" value="0.16168478260869565" />
         <entry key="..\:/Users/Bastien/Desktop/FindMe-App/app/src/main/res/layout/post.xml" value="0.16666666666666666" />
+        <entry key="app/src/main/res/layout/activity_login2.xml" value="0.2265625" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.2265625" />
+        <entry key="app/src/main/res/layout/app_bar_layout.xml" value="0.2265625" />
+        <entry key="app/src/main/res/layout/group_item.xml" value="0.2265625" />
+        <entry key="app/src/main/res/layout/person.xml" value="0.1838768115942029" />
+        <entry key="app/src/main/res/layout/petinfo.xml" value="0.1838768115942029" />
+        <entry key="app/src/main/res/layout/petinfomap.xml" value="0.1838768115942029" />
+        <entry key="app/src/main/res/layout/show_here_reports.xml" value="0.1838768115942029" />
       </map>
     </option>
   </component>

@@ -3,7 +3,6 @@ package com.example.findme;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 
 
 public class ShowHereReportsActivity extends AppCompatActivity {
@@ -71,7 +69,7 @@ public class ShowHereReportsActivity extends AppCompatActivity {
             @NonNull
             @Override
             public personHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.person, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.here_report_card, parent, false);
                 return new personHolder(view);
             }
         };

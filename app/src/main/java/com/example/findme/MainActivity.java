@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,9 +33,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.logging.LoggingPermission;
 
@@ -179,28 +188,87 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
-        BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.rudy);
-        Bitmap b=bitmapdraw.getBitmap();
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 200, 200, false);
+        showLostPets();
 
-        MarkerOptions LostDogMarker = new MarkerOptions()
-                .position(new LatLng(36.368129, 127.360198))
-                .title("Rudy")
-                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-        Marker marker = map.addMarker(LostDogMarker);
-        marker.showInfoWindow();
-
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
-                Intent intent = new Intent(MainActivity.this, PetInfoActivity.class);
-                startActivity(intent);
-                return false;
-            }
-        });
+//        BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.rudy);
+//        Bitmap b=bitmapdraw.getBitmap();
+//        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 200, 200, false);
+//
+//        MarkerOptions LostDogMarker = new MarkerOptions()
+//                .position(new LatLng(36.368129, 127.360198))
+//                .title("Rudy")
+//                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+//        Marker marker = map.addMarker(LostDogMarker);
+//        marker.showInfoWindow();
+//
+//        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(@NonNull Marker marker) {
+//                Intent intent = new Intent(MainActivity.this, PetInfoActivity.class);
+//                startActivity(intent);
+//                return false;
+//            }
+//        });
 
     }
     // [END maps_current_place_on_map_ready]
+
+
+    void showLostPets(){
+        Query query = FirebaseFirestore.getInstance().collection("pet");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Firebase", document.getId() + " => " + document.getData());
+
+                        LatLng latLng = new LatLng(document.getGeoPoint("location").getLatitude(), document.getGeoPoint("location").getLongitude());
+                        String name = document.getString("name");
+                        String imgPath = document.getString("repImg");
+
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                        StorageReference photoReference = storageReference.child(imgPath); //imgPath = "here/1.jpg
+                        photoReference.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                Bitmap bitmap2 = bitmap.createScaledBitmap(bitmap, 150, 150, false);
+                                Marker lostPetMarker = map.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap2))
+                                );
+                                lostPetMarker.setTag(document.getId());
+                            }
+                        });
+
+//                        Marker lostPetMarker = map.addMarker(new MarkerOptions()
+//                                .position(latLng)
+//                                .title(name));
+//                        lostPetMarker.setTag(document.getId());
+                    }
+
+                    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            //go to clicked pet's info
+                            Intent intent = new Intent(MainActivity.this, PetInfoActivity.class);
+                            intent.putExtra("petId", marker.getTag().toString());
+                            startActivity(intent);
+                            return false;
+                        }
+                    });
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+
+            }
+        });
+    }
 
     /**
      * Gets the current location of the device, and positions the map's camera.

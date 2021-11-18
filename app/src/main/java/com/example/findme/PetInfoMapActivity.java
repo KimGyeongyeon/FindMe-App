@@ -103,10 +103,15 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
     private static final String KEY_LOCATION = "location";
     // [END maps_current_place_state_keys]
 
+    public String petId;
+
     // [START maps_current_place_on_create]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        petId = intent.getStringExtra("petId");
 
         // [START_EXCLUDE silent]
         // [START maps_current_place_on_create_save_instance_state]
