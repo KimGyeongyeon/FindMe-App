@@ -47,6 +47,7 @@ public class PetInfoActivity extends AppCompatActivity {
     private static final String KEY_LOCATION = "location";
     private Location lastKnownLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
+//    private ArrayList<PetInfo> petArray;
 
     // Firebase variable
     private DatabaseReference ref;
@@ -71,8 +72,8 @@ public class PetInfoActivity extends AppCompatActivity {
 
         // 2) Initialize Firebase-related variables
 //        petArray = new ArrayList<>(); //Include Every Pet information
-//        database = FirebaseDatabase.getInstance(); // Connect FireBase Here
-//        ref = database.getReference("storage/pet");// Connect DB table
+//        database = FirebaseFirestore.getInstance(); // Connect FireBase Here
+//        ref = database.collection("pet");// Connect DB table
 
         // 3) Distribute the info to view
         // Use sample data
