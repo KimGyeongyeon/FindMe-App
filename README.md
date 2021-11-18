@@ -15,7 +15,6 @@
   + Need a Gmail Account
 
 > Implementation
-  + MainActivity.java
   + LoginActivity2.java
   + RegisterActivity.java
 
@@ -26,8 +25,7 @@
 > Show all lost pets on the map with a photo marker
 
 > Implementation
-  + PetInfoMapActivity.java
-  + PetInfo class
+  + MainActivity.java
 
 --------------------------------------------
 
@@ -38,7 +36,10 @@
 
 > Implementation
   + PetInfoActivity.java
+  + PetInfoMapActivity.java
+  + ShowHereActivity.java
   + NotHere class
+  + HereReportCard.java
 
 --------------------------------------------
 
@@ -50,7 +51,8 @@
 
 > Implementation
   + PostActivity.java
-  + HereReportCard.java
+  + missingAdapter.java
+  + missingContainer.java
 
 --------------------------------------------
 
@@ -73,15 +75,6 @@
 > Implementation
   + MainActivity.java
   + FireBaseMessagingService.java
-
---------------------------------------------
-
-## Others
-
-> Implementation
-  + ShowHereReportsActivity.java
-  + missingAdapter.java
-  + missingContainer.java
 
 --------------------------------------------
 
