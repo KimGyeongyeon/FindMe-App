@@ -14,10 +14,10 @@ The java file for each function is as follows. Layout consists of xml with the s
     - Check lost pet on the map
         - PetInfoMapActivity.java
         - PetInfo class
-    - Pet이 주변에 없을 때
+    - When pet is not around you
         - PetInfoActivity.java
         - NotHere class
-    - Pet을 찾았을 때
+    - When you find the pet
         - PostActivity.java
         - HereReportCard.java
     - Help the pet through game
