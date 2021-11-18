@@ -150,22 +150,6 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
             }
         });
 
-//        location_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast toast = Toast.makeText(getBaseContext(), "location", Toast.LENGTH_LONG);
-//                toast.show();
-//            }
-//        });
-
-        image_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getBaseContext(), "gallery", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
-
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,8 +190,8 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                                 if (loc != null) {
 
                                     Log.d("asdf", Double.toString(loc.getLatitude()));
-                                    Toast toast = Toast.makeText(getBaseContext(), "location success", Toast.LENGTH_LONG);
-                                    toast.show();
+//                                    Toast toast = Toast.makeText(getBaseContext(), "location success", Toast.LENGTH_LONG);
+//                                    toast.show();
 
                                     Map<String, Object> info = new HashMap<>();
                                     info.put("date", now);

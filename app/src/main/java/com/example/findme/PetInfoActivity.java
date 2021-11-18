@@ -181,7 +181,6 @@ public class PetInfoActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
 
