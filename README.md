@@ -1,7 +1,5 @@
 # FindMe-App
 
---------------------------------------------
-
 ## Summary
 > FindMe is an application for users who want to find lost pets.
 + Frontend: Android studio, Java
@@ -45,9 +43,9 @@
 
 ## Post
 
-> Can take a picture of a lost pet a user found and upload the post
-> Can link the pet with existing lost pet in the App
-> Can post a pet that seems lost but do not exist in the App
+> Can take a picture of a lost pet a user found and upload the post.  
+> Can link the pet with existing lost pet in the App.  
+> Can post a pet that seems lost but do not exist in the App.  
 
 > Implementation
   + PostActivity.java
@@ -57,7 +55,7 @@
 
 ## Game
 
-> Can contribute to finding lost pet with a fun game even if the user is not near the lost pet.
+> Can contribute to finding lost pet with a fun game even if the user is not near the lost pet.  
 > User is asked to compare the two images and click check if they are same pet, and x if not.
 
 > Implementation
@@ -80,8 +78,7 @@
 
 ## Others
 
-> ShowHereReportsActivity.java
-> missingAdapter.java
-> missingContainer.java
-
---------------------------------------------
+> Implementation
+  + ShowHereReportsActivity.java
+  + missingAdapter.java
+  + missingContainer.java
