@@ -6,28 +6,28 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotHere {
-    public Location latLng;
+    public GeoPoint latLng;
     public int weight;
 
     public NotHere(){
-        this.latLng = new Location("LocationManager#GPS_PROVIDER");
         this.weight = 5;
     }
 
-    public NotHere(Location location, int weight){
-        this.latLng = new Location(location);
+    public NotHere(GeoPoint location, int weight){
+        this.latLng = new GeoPoint(location.getLatitude(), location.getLongitude());
 
         this.weight = weight;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(GeoPoint location) {
         if(location != null){
-            this.latLng = new Location(location);
+            this.latLng = new GeoPoint(location.getLatitude(), location.getLongitude());
             Log.d("PetInfo_NotHere class", String.valueOf(location));
         }
 

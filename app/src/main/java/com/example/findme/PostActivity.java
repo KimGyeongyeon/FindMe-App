@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,6 +46,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import io.grpc.Context;
 
 public class PostActivity extends Activity implements AdapterView.OnItemSelectedListener{
 
@@ -95,10 +99,12 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
         setContentView(R.layout.post);
 
         // test missingContainer class
-        missingContainer test1 = new missingContainer(image, "test1");
-        missingContainer test2 = new missingContainer(image, "test2");
-        missingContainer others = new missingContainer(null, "others");
-        missingContainer missing[] = {test1, test2, others};
+
+        missingContainer test1 = new missingContainer("pet-info/Rudy/Rudy_3.PNG", "Rudy");
+        missingContainer test2 = new missingContainer("pet-info/Gold/gold_01_2.jpg", "Gold");
+        missingContainer test3 = new missingContainer("pet-info/milo/milo_4.PNG", "Milo");
+        missingContainer others = new missingContainer("images/white.png", "Others");
+        missingContainer missing[] = {test1, test2, test3, others};
 
         missing_spinner = findViewById(R.id.spinner);
         back_button = findViewById(R.id.back);

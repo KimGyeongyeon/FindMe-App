@@ -2,6 +2,8 @@ package com.example.findme;
 
 import android.location.Location;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,14 +11,13 @@ import java.util.Date;
 public class PetInfo {
     private String date;
     private ArrayList<String> img;
-    private Location location;
+    private GeoPoint location;
     private String name;
     private String profile;
 
 
     public PetInfo(){
         super();
-        this.location = new Location("LocationManager#GPS_PROVIDER");
         this.img = new ArrayList<>(4);
         for(int i=0 ; i<4; i++){
             this.img.
@@ -36,14 +37,12 @@ public class PetInfo {
 //    }
 //
     public PetInfo( Date date, String[] profile_images,
-                    double[] location, String name, String profile){
+                    GeoPoint location, String name, String profile){
         super();
         this.date = String.valueOf(date);
         this.name = name;
         this.profile = profile;
-        this.location = new Location("LocationManager#GPS_PROVIDER");
-        this.location.setLatitude(location[0]);
-        this.location.setLongitude(location[1]);
+        this.location = new GeoPoint(location.getLatitude(), location.getLongitude());
         this.img = new ArrayList<>(4);
         for(int i=0 ; i<4; i++){
             this.img.add( profile_images[i]);
@@ -59,7 +58,7 @@ public class PetInfo {
         "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FRudy%2FRudy_3.PNG?alt=media&token=fd9d959b-39c2-4f53-9405-305158f0fc66",
         "https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/pet-info%2FRudy%2FRudy_4.PNG?alt=media&token=58329336-5b9c-4341-88fb-f407e1f2b76f"
         };
-        double[] loc_arr = {36.368155, 127.364914};
+        GeoPoint loc_arr = new GeoPoint(36.373611,127.358528);
         return new PetInfo(test_date, url, loc_arr,
                 "Rudy","I lost her in front of E3. He is wearing a yellow lead. Please find herTT ");
     }
@@ -91,13 +90,12 @@ public class PetInfo {
         this.profile = profile;
     }
 
-    public Location getLocation(){
+    public GeoPoint getLocation(){
         return location;
     }
 
-    public void setLocation(double[] location) {
-        this.location.setLatitude(location[0]);
-        this.location.setLongitude(location[1]);
+    public void setLocation(GeoPoint location) {
+        this.location = new GeoPoint(location.getLatitude(), location.getLongitude());
     }
 
     public ArrayList<String> getImage(){

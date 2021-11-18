@@ -3,10 +3,10 @@ package com.example.findme;
 import android.graphics.Bitmap;
 
 public class missingContainer {
-    Bitmap image;
+    String image_url;
     String name;
-    public missingContainer(Bitmap image, String name) {
-        this.image = image;
+    public missingContainer(String image_url, String name) {
+        this.image_url = image_url;
         this.name = name;
     }
 }
