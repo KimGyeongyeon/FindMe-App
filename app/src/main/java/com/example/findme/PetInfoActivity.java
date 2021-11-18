@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -175,7 +176,8 @@ public class PetInfoActivity extends AppCompatActivity {
                         if (location != null) {
                             // Logic to handle location object
 //                             2) weight 설정하기
-                                    NotHere report = new NotHere(location,5);
+                                    GeoPoint geo_location = new GeoPoint(location.getLatitude(), location.getLongitude());
+                                    NotHere report = new NotHere(geo_location,5);
 
                                     // 3) 문서 이름 정하기
                                     Date cur_time = new Date();
