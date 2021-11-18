@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -43,6 +44,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.logging.LoggingPermission;
 
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         game_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                Intent intent = new Intent(getApplicationContext(), GameIntroActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -153,6 +155,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         // [END maps_current_place_map_fragment]
+
+
+
+        // Get token for push notification
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // Check the token in log
+                        Log.d("FCM token - 18:02", token);
+                    }
+                });
+
+        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                          Log.d("FCM token - 18:11", "token subscribe success");
+                    }
+                });
+
     }
     // [END maps_current_place_on_create]
 
@@ -245,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
+    // [END maps_current_place_on_map_ready]
 
     /**
      * Gets the current location of the device, and positions the map's camera.

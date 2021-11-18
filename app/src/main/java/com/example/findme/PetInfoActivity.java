@@ -80,7 +80,7 @@ public class PetInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("PetInfoActivity-fire", "Updated 23:24");
+        Log.d("PetInfoActivity-fire", "Update 16:48");
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
