@@ -82,3 +82,11 @@
   + ShowHereReportsActivity.java
   + missingAdapter.java
   + missingContainer.java
+
+--------------------------------------------
+
+## Hard Coded Parts
+
+> Missing pet reports are already uploaded in the App.  
+> Game data randomize not implemented.  
+> Notification message is send to all users using the app at the same time.  
