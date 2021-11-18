@@ -190,26 +190,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         showLostPets();
 
-//        BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.rudy);
-//        Bitmap b=bitmapdraw.getBitmap();
-//        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 200, 200, false);
-//
-//        MarkerOptions LostDogMarker = new MarkerOptions()
-//                .position(new LatLng(36.368129, 127.360198))
-//                .title("Rudy")
-//                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-//        Marker marker = map.addMarker(LostDogMarker);
-//        marker.showInfoWindow();
-//
-//        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(@NonNull Marker marker) {
-//                Intent intent = new Intent(MainActivity.this, PetInfoActivity.class);
-//                startActivity(intent);
-//                return false;
-//            }
-//        });
-
     }
     // [END maps_current_place_on_map_ready]
 
@@ -243,10 +223,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
 
-//                        Marker lostPetMarker = map.addMarker(new MarkerOptions()
-//                                .position(latLng)
-//                                .title(name));
-//                        lostPetMarker.setTag(document.getId());
                     }
 
                     map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

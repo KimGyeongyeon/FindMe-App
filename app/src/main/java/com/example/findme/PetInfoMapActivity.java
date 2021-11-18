@@ -60,7 +60,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.heatmaps.Gradient;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.WeightedLatLng;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;

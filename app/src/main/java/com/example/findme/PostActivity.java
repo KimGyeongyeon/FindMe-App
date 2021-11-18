@@ -1,5 +1,6 @@
 package com.example.findme;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,24 +59,33 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
     Button submit_button;
     ImageView camera_image;
 
+    private boolean locationPermissionGranted;
+    private static final String KEY_LOCATION = "location";
+    private Location lastKnownLocation;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
-    private FusedLocationProviderClient fusedLocationProviderClient;
 
     private static final String TAG = PostActivity.class.getSimpleName();
-    private Location lastKnownLocation;
-    Boolean locationPermission = false;
+    String selected = "Rudy";
+//    LatLng location;
 
-    String selected = "";
-    LatLng location = new LatLng(-33.8523341, 151.2106085);
+    public String file_path;
+    public String documentId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Get Image from camera activity.
+        Intent intent = getIntent();
+        Bitmap image = (Bitmap) intent.getExtras().get("bitmap");
+
+        setContentView(R.layout.post);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -84,19 +94,12 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
         storageReference = storage.getReference();
         db = FirebaseFirestore.getInstance();
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        //Get Image from camera activity.
-        Intent intent = getIntent();
-        Bitmap image = (Bitmap) intent.getExtras().get("bitmap");
-//        locationPermission = (Boolean) intent.getExtras().getBoolean("LocationPermission");
 
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationPermission= true;
+        getLocationPermission();
+        if (savedInstanceState != null) {
+            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
-
-        setContentView(R.layout.post);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // test missingContainer class
 
@@ -122,7 +125,7 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++check > 1) {
-                    Toast toast = Toast.makeText(getBaseContext(), missing[i].name + "Item Selected", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getBaseContext(), missing[i].name + " selected", Toast.LENGTH_SHORT);
                     toast.show();
                     missingContainer select = (missingContainer) missing_spinner.getItemAtPosition(i);
                     selected = select.name;
@@ -147,13 +150,13 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
             }
         });
 
-        location_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = Toast.makeText(getBaseContext(), "location", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
+//        location_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast toast = Toast.makeText(getBaseContext(), "location", Toast.LENGTH_LONG);
+//                toast.show();
+//            }
+//        });
 
         image_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,61 +175,111 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyyy_MM_dd_HH_mm_ss", Locale.KOREA);
                 Date now = new Date();
                 String filename = formatter.format(now);
-                String file_path ="";
+//                String file_path ="";
                 StorageReference imagesRef;
-                if (selected == "others") {
+//                String documentId = "";
+
+                if (selected.equals("Gold")){
+                    file_path = "here/Gold/" + filename + ".jpg";
+                    documentId = "gwMW4cRBj14MXiSM0dZ9";
+                } else if (selected.equals("Rudy")){
+                    file_path = "here/Rudy/" + filename + ".jpg";
+                    documentId = "HiTmyu4oVYngQ8mbV1v2";
+                } else if (selected.equals("Milo")) {
+                    file_path = "here/Milo/" + filename + ".jpg";
+                    documentId = "NtWqL5M7kQY7mNtfexsj";
+                } else {
                     file_path ="new/" + filename + ".jpg";
-                }
-                else {
-                    file_path = "here/" + filename + ".jpg";
                 }
                 imagesRef = storageReference.child(file_path);
 
-//                getDeviceLocation();
+//                Log.d("asdf", Double.toString(loc.getLatitude()));
 
-                Map<String, Object> info = new HashMap<>();
-                info.put("date", now);
-                info.put("img", file_path);
-//                info.put("latLng", new GeoPoint(location.latitude, location.latitude));
-                info.put ("latLng", new GeoPoint(location.latitude, location.longitude));
-                info.put("userMail",currentUser.getEmail());
-                db.collection("here")
-                        .add(info)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                if (ActivityCompat.checkSelfPermission(PostActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(PostActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    getLocationPermission(); }
+                fusedLocationProviderClient.getLastLocation()
+                        .addOnSuccessListener(PostActivity.this, new OnSuccessListener<Location>() {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
+                            public void onSuccess(Location loc) {
+
+                                // Got last known location. In some rare situations this can be null.
+                                if (loc != null) {
+
+                                    Log.d("asdf", Double.toString(loc.getLatitude()));
+                                    Toast toast = Toast.makeText(getBaseContext(), "location success", Toast.LENGTH_LONG);
+                                    toast.show();
+
+                                    Map<String, Object> info = new HashMap<>();
+                                    info.put("date", now);
+                                    info.put("img", file_path);
+                                    info.put ("latLng", new GeoPoint(loc.getLatitude(), loc.getLongitude()));
+                                    info.put("userMail",currentUser.getEmail());
+//                                    if(documentId == null) return;
+                                    db.collection("pet").document(documentId).collection("here")
+                                            .add(info)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error adding document", e);
+                                                }
+                                            });
+
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                    byte[] data = baos.toByteArray();
+
+                                    UploadTask uploadTask = imagesRef.putBytes(data);
+                                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast toast = Toast.makeText(getBaseContext(), "upload failure", Toast.LENGTH_LONG);
+                                            toast.show();
+                                        }
+                                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            Toast toast = Toast.makeText(getBaseContext(), "upload success", Toast.LENGTH_LONG);
+                                            toast.show();
+//                        String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                                        }
+                                    });
+                                }
+                                else {
+                                    Log.d("PetInfo-location", "location is null");
+                                }
                             }
                         });
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] data = baos.toByteArray();
-
-                UploadTask uploadTask = imagesRef.putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast toast = Toast.makeText(getBaseContext(), "upload failure", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast toast = Toast.makeText(getBaseContext(), "upload success", Toast.LENGTH_LONG);
-                        toast.show();
-//                        String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                    }
-                });
             }
         });
     }
+
+    private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+        }
+    }
+
     // implement AdapterView.OnItemSelectedListener
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {}

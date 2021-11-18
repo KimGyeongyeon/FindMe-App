@@ -48,6 +48,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -170,7 +171,7 @@ public class PetInfoActivity extends AppCompatActivity {
                             Date date = document.getDate("date");
 
                             petName.setText(name);
-                            petDate.setText(date.toString());
+                            petDate.setText(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date));
                             petProfile.setText(profile);
                             Glide.with(getApplicationContext()).load(imgPaths.get(0)).into(petImageView1);
                             Glide.with(getApplicationContext()).load(imgPaths.get(1)).into(petImageView2);
@@ -222,7 +223,7 @@ public class PetInfoActivity extends AppCompatActivity {
                                     // 4) Firebase로 전송
                                     database = FirebaseFirestore.getInstance(); // Connect FireBase Here
                                     //ref = database.getReference("findme-a2f27");
-                                    database.collection("notHere").document(docs_name).set(report);
+                                    database.collection("pet").document(petId).collection("notHere").document(docs_name).set(report);
                         }
                         else {
                             Log.d("PetInfo-location", "location is null");
