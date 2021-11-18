@@ -67,7 +67,7 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
     Boolean locationPermission = false;
 
     String selected = "";
-    LatLng location;
+    LatLng location = new LatLng(-33.8523341, 151.2106085);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -176,12 +176,13 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                 }
                 imagesRef = storageReference.child(file_path);
 
-                getDeviceLocation();
+//                getDeviceLocation();
 
                 Map<String, Object> info = new HashMap<>();
                 info.put("date", now);
                 info.put("img", file_path);
 //                info.put("latLng", new GeoPoint(location.latitude, location.latitude));
+                info.put ("latLng", new GeoPoint(location.latitude, location.longitude));
                 info.put("userMail",currentUser.getEmail());
                 db.collection("here")
                         .add(info)
@@ -227,36 +228,36 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     public void onNothingSelected(AdapterView<?> parent) {}
 
-    private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            if (locationPermission) {
-
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                location = new LatLng(lastKnownLocation.getLatitude(),
-                                        lastKnownLocation.getLongitude());
-                            }
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            location = new LatLng(-33.8523341, 151.2106085);
-
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage(), e);
-        }
-    }
+//    private void getDeviceLocation() {
+//        /*
+//         * Get the best and most recent location of the device, which may be null in rare
+//         * cases when a location is not available.
+//         */
+//        try {
+//            if (locationPermission) {
+//
+//                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+//                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Location> task) {
+//                        if (task.isSuccessful()) {
+//                            // Set the map's camera position to the current location of the device.
+//                            lastKnownLocation = task.getResult();
+//                            if (lastKnownLocation != null) {
+//                                location = new LatLng(lastKnownLocation.getLatitude(),
+//                                        lastKnownLocation.getLongitude());
+//                            }
+//                        } else {
+//                            Log.d(TAG, "Current location is null. Using defaults.");
+//                            Log.e(TAG, "Exception: %s", task.getException());
+//                            location = new LatLng(-33.8523341, 151.2106085);
+//
+//                        }
+//                    }
+//                });
+//            }
+//        } catch (SecurityException e)  {
+//            Log.e("Exception: %s", e.getMessage(), e);
+//        }
+//    }
 }
