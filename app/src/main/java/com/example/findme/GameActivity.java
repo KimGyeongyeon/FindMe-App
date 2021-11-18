@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,9 @@ public class GameActivity extends AppCompatActivity {
     private CollectionReference userRef;
     private CollectionReference petInfoRef;
     private CollectionReference gameRef;
+    private FirebaseStorage storage;
+    StorageReference storageReference;
+    StorageReference pathReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +97,9 @@ public class GameActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         petInfoRef = db.collection("pet");
         gameRef = db.collection("game");
-        Query query1 = petInfoRef.whereEqualTo("name", "Milo");
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        Query query1 = petInfoRef.whereEqualTo("name", "Gold");
         query1.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -101,7 +108,7 @@ public class GameActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Firebase1", document.getId() + " => " + document.getData());
                                 pet_name_ = (String) document.get("name");
-                                pet_imgs =  (List<String>) document.get("img");
+                                pet_imgs = (List<String>) document.get("img");
 
                                 // Set original.
                                 Glide.with(original).load(pet_imgs.get(0)).into(original);
@@ -110,29 +117,34 @@ public class GameActivity extends AppCompatActivity {
                                 pet_name.setText("Is this below " + pet_name_ + "?");
 
                                 // Second query
-                                Query query2 = gameRef.whereEqualTo("name", "game0");
-                                query2.get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        Log.d("Firebase2", document.getId() + " => " + document.getData());
-                                                        game_imgs =  (List<String>) document.get("imgs");
+                                gameRef = db.collection("pet").document(document.getId()).collection("here");
 
-                                                        // Set compare List
-                                                        compares = game_imgs;
-                                                        compares.add(2, pet_imgs.get(1));
-                                                        compares.add(5, pet_imgs.get(2));
-                                                        compares.add(8, pet_imgs.get(3));
-                                                        game_start();
+                                gameRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                pathReference = storageReference.child((String) document.get("img"));
+                                                pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                    @Override
+                                                    public void onSuccess(Uri uri) {
+                                                        Log.d("uri", String.valueOf(uri));
+                                                        game_imgs.add(String.valueOf(uri));
                                                     }
-                                                }
-                                                else {
-                                                    Log.d("Firebase", "download game fail");
-                                                }
+                                                });
                                             }
-                                        });
+                                            Log.d("Firebase2", game_imgs.toString());
+                                            // Set compare List
+                                            compares = game_imgs;
+                                            compares.add(pet_imgs.get(1));
+                                            compares.add(pet_imgs.get(2));
+                                            compares.add(pet_imgs.get(3));
+                                            game_start();
+                                        } else {
+                                            Log.d("Firebase2", "download here image fail");
+                                        }
+                                    }
+                                });
                             }
                         }
                         else {
@@ -210,9 +222,9 @@ public class GameActivity extends AppCompatActivity {
 
         // Take result depend on QC.
         int score = 0;
+        if (correctness.get(0)) score++;
+        if (correctness.get(1)) score++;
         if (correctness.get(2)) score++;
-        if (correctness.get(5)) score++;
-        if (correctness.get(8)) score++;
         score = score * 10;
 
         // Get User's score.
