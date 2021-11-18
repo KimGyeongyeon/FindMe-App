@@ -35,6 +35,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.logging.LoggingPermission;
+
 /**
  * An activity that displays a map showing the place at the device's current location.
  */
@@ -111,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 if (cameraPermissionGranted) {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                    cameraIntent.putExtra("LocationPermission", locationPermissionGranted);
+
                     startActivityForResult(cameraIntent, TAKE_PICTURE);
                 }
                 else {
