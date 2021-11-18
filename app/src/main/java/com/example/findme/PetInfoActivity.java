@@ -47,9 +47,9 @@ public class PetInfoActivity extends AppCompatActivity {
     private static final String KEY_LOCATION = "location";
     private Location lastKnownLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
+//    private ArrayList<PetInfo> petArray;
 
     // Firebase variable
-    //private FirebaseDatabase database;
     private DatabaseReference ref;
     private FirebaseFirestore database;
 
@@ -72,8 +72,8 @@ public class PetInfoActivity extends AppCompatActivity {
 
         // 2) Initialize Firebase-related variables
 //        petArray = new ArrayList<>(); //Include Every Pet information
-//        database = FirebaseDatabase.getInstance(); // Connect FireBase Here
-//        ref = database.getReference("storage/pet");// Connect DB table
+//        database = FirebaseFirestore.getInstance(); // Connect FireBase Here
+//        ref = database.collection("pet");// Connect DB table
 
         // 3) Distribute the info to view
         // Use sample data
@@ -167,7 +167,6 @@ public class PetInfoActivity extends AppCompatActivity {
 
         // 1) 현재 위치 report에 저장하기
 
-        NotHere report = new NotHere();
         fusedLocationProviderClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
@@ -176,8 +175,7 @@ public class PetInfoActivity extends AppCompatActivity {
                         if (location != null) {
                             // Logic to handle location object
 //                             2) weight 설정하기
-                                    report.setLocation(location);
-                                    report.setWeight(5);
+                                    NotHere report = new NotHere(location,5);
 
                                     // 3) 문서 이름 정하기
                                     Date cur_time = new Date();
@@ -199,55 +197,6 @@ public class PetInfoActivity extends AppCompatActivity {
 
 
     }
-//
-//    private Location current_location() {
-//        /*
-//         * Get the best and most recent location of the device, which may be null in rare
-//         * cases when a location is not available.
-//         */
-//        final Location[] ret_value = new Location[1]; //we will save return value here
-//        ret_value[0] = new Location("LocationManager#GPS_PROVIDER");
-//        try {
-//            if (locationPermissionGranted) {
-//
-//
-//                //Get location
-//                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-//                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Location> task) {
-//                        if (task.isSuccessful()) {
-//                            // Set the map's camera position to the current location of the device.
-//
-//                            lastKnownLocation = task.getResult();
-//                            if (lastKnownLocation != null) {
-//                                Log.d("PetInfo-location","Got recent location");
-//                                ret_value[0] = new Location(lastKnownLocation);
-//                            }
-//                        } else {
-//                            Log.d("PetInfo-location", "Current location is null. Using defaults.");
-//                            ret_value[0].setLatitude(36.181818);
-//                            ret_value[0].setLongitude(127.351818);
-//                        }
-//                    }
-//                });
-//
-//
-//            }
-//            else{
-//                Log.d("PetInfo-location", "Location permission denied");
-//                ret_value[0] = new Location("LocationManager#GPS_PROVIDER");
-//                ret_value[0].setLatitude(36.181818);
-//                ret_value[0].setLongitude(127.351818);
-//
-//            }
-//
-//        } catch (SecurityException e)  {
-//            Log.e("PetInfo-location: %s", e.getMessage(), e);
-//        }
-//
-//        return ret_value[0];
-//    }
 
     private void getLocationPermission() {
         /*
