@@ -31,9 +31,10 @@
 
 --------------------------------------------
 
-## Not Here Report
+## Pet Detail
 
-> Can click Not Here button to report that a lost pet is not around you.
+> Can see detailed information about the lost pet.  
+> Can click Not Here button to report that a lost pet is not around you.  
 
 > Implementation
   + PetInfoActivity.java
@@ -72,7 +73,6 @@
 > Implementation
   + MainActivity.java
   + FireBaseMessagingService.java
-
 
 --------------------------------------------
 
