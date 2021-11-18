@@ -98,6 +98,10 @@ public class PetInfoActivity extends AppCompatActivity {
         //Main Button Event
 
         final Button main_button = findViewById(R.id.main_bar);
+//        final Button here_button = findViewById(R.id.here_button);
+        final Button not_here_button = findViewById(R.id.not_here_button);
+        final ImageView map_preview_image = findViewById(R.id.map_preview);
+
         main_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,8 +112,6 @@ public class PetInfoActivity extends AppCompatActivity {
         });
 
         //Not Here event
-
-        final Button not_here_button = findViewById(R.id.not_here_button);
         getLocationPermission();
         if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -132,6 +134,15 @@ public class PetInfoActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getBaseContext(), "Please check location of the pet.", Toast.LENGTH_LONG);
                     toast.show();
                 }
+            }
+        });
+
+        map_preview_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //go to PetInfoMapActivity
+                Intent intent = new Intent(getBaseContext(), PetInfoMapActivity.class);
+                startActivity(intent);
             }
         });
 

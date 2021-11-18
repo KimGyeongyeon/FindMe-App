@@ -40,6 +40,8 @@
         <activity android:name=".PostActivity"/>
         <activity android:name=".PetInfoActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".PetInfoMapActivity" />
+        <activity android:name=".ShowHereReportsActivity" />
     </application>
 
 </manifest>
