@@ -67,7 +67,7 @@
 ## Notification
 
 > Send notification the users to motivate them to find lost pets.
-> Used Firebase Cloud Messaging/
+> Used Firebase Cloud Messaging
 
 > Implementation
   + MainActivity.java
