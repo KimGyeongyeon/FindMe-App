@@ -90,7 +90,6 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
         Intent intent = getIntent();
         petId = intent.getStringExtra("petId");
-//        Toast.makeText(getApplicationContext(), petId, Toast.LENGTH_SHORT).show();
 
 
         // [START_EXCLUDE silent]
@@ -136,7 +135,6 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-//                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     Collection<WeightedLatLng> weightedLatLngs = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Firebase", document.getId() + " => " + document.getData());
@@ -198,7 +196,6 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     Collection<WeightedLatLng> weightedLatLngs = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Firebase", document.getId() + " => " + document.getData());
@@ -228,7 +225,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                     // Add a tile overlay to the map, using the heat map tile provider.
                     TileOverlay overlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
                 } else {
-//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
             }
@@ -243,7 +240,6 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-//                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Firebase", document.getId() + " => " + document.getData());
 
@@ -263,14 +259,13 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                         @Override
                         public boolean onMarkerClick(Marker marker) {
                             //Using position get Value from arraylist
-//                            Toast.makeText(getApplicationContext(), (String) marker.getTag(), Toast.LENGTH_SHORT).show();
                             showBottomSheetDialog((String) marker.getTag());
                             return false;
                         }
                     });
 
                 } else {
-//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
             }
@@ -305,7 +300,6 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-//                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("Firebase", document.getId() + " => " + document.getData());
 
@@ -325,15 +319,15 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                         @Override
                         public boolean onMarkerClick(Marker marker) {
                             //Using position get Value from arraylist
-//                            Toast.makeText(getApplicationContext(), (String) marker.getTag(), Toast.LENGTH_SHORT).show();
                             showBottomSheetDialog((String) marker.getTag());
                             return false;
                         }
                     });
 
                 } else {
-//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException()
+                    );
                 }
             }
         });
@@ -354,10 +348,8 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-//                    Toast.makeText(getApplicationContext(), docId, Toast.LENGTH_SHORT).show();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if(document.getId().equals(docId)){
-//                            Toast.makeText(getApplicationContext(), "asdf", Toast.LENGTH_SHORT).show();
 
                             ///여기에서 가져오기!!!!
                             String imgPath = document.getString("img");
@@ -384,7 +376,7 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
                     }
                 } else {
-//                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());
                 }
             }

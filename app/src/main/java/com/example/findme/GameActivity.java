@@ -245,7 +245,7 @@ public class GameActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Log.d("POST", "DocumentSnapshot successfully updated!");
-                                                pet_name.setText("your score changes " + String.valueOf(document.get("Score")) + " -> "
+                                                pet_name.setText("You Get " + String.valueOf(Score) + "/30\n" +"your score changes " + String.valueOf(document.get("Score")) + " -> "
                                                         + String.valueOf(finalScore));
                                                 return_button.setVisibility(View.VISIBLE);
                                             }

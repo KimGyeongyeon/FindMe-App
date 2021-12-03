@@ -79,8 +79,9 @@ public class GameIntroActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("query2", document.getId() + " => " +document.getData());
                                 Map data = document.getData();
+                                Log.d("gi", data.toString());
                                 world_record.setText(String.valueOf(data.get("Score")));
-                                world_record_nickname.setText(String.valueOf(data.get("Nickname")));
+                                world_record_nickname.setText(String.valueOf(data.get("NickName")));
                             }
                         }
                         else {
