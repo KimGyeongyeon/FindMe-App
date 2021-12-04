@@ -87,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                         data.put("NickName", temp[0]);
                         data.put("Score", 0);
                         data.put("Uid", user.getUid());
+                        data.put("gameCount", 0);
                         userRef.add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {

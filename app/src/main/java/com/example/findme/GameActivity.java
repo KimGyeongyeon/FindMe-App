@@ -230,7 +230,16 @@ public class GameActivity extends AppCompatActivity {
         // Get User's score.
         userRef = db.collection("user");
         Query query = userRef.whereEqualTo("Uid", uid);
+
+        // score to communicate with firebase thread.
         int Score = score;
+        int emoji = 0x1F926;
+        if (Score == 30) emoji = 0x1F947;
+        if (Score == 20) emoji = 0x1F948;
+        if (Score == 10) emoji = 0x1F949;
+
+        // variable for firebase thread.
+        int Emoji = emoji;
         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -238,14 +247,17 @@ public class GameActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Firebase1", document.getId() + " => " + document.getData());
+
+                                // update game result.
                                 int finalScore = Score + Integer.parseInt(String.valueOf(document.get("Score")));
+                                int gameCount = 1 + Integer.parseInt(String.valueOf((document.get("gameCount"))));
                                 userRef.document(document.getId())
-                                        .update("Score", finalScore)
+                                        .update("Score", finalScore, "gameCount", gameCount)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Log.d("POST", "DocumentSnapshot successfully updated!");
-                                                pet_name.setText("You Get " + String.valueOf(Score) + "/30\n" +"your score changes " + String.valueOf(document.get("Score")) + " -> "
+                                                pet_name.setText("You Get " + String.valueOf(Score) + "/30" + getEmojiByUnicode(Emoji) +"\nyour score changes " + String.valueOf(document.get("Score")) + " -> "
                                                         + String.valueOf(finalScore));
                                                 return_button.setVisibility(View.VISIBLE);
                                             }
