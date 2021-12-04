@@ -116,8 +116,10 @@ public class GameActivity extends AppCompatActivity {
                                 Glide.with(original).load(pet_imgs.get(0)).into(original);
 
                                 pet_imgs.remove(0);
-
                                 Collections.shuffle(pet_imgs);
+                                qc_imgs.add(pet_imgs.get(0));
+                                qc_imgs.add("https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/game%2Fqc2.jpg?alt=media&token=71054502-17d0-4e14-890c-bf2e241c5797");
+                                qc_imgs.add(pet_imgs.get(1));
 
                                 // Set pet name.
                                 pet_name.setText("Is this below " + pet_name_ + "?");
@@ -142,9 +144,9 @@ public class GameActivity extends AppCompatActivity {
                                             Log.d("Firebase2", game_imgs.toString());
                                             // Set compare List
                                             compares = game_imgs;
-                                            compares.add(pet_imgs.get(1));
-                                            compares.add(pet_imgs.get(2));
-                                            compares.add(pet_imgs.get(3));
+                                            compares.add(qc_imgs.get(0));
+                                            compares.add(qc_imgs.get(1));
+                                            compares.add(qc_imgs.get(2));
                                             game_start();
                                         } else {
                                             Log.d("Firebase2", "download here image fail");
@@ -229,7 +231,7 @@ public class GameActivity extends AppCompatActivity {
         // Take result depend on QC.
         int score = 0;
         if (correctness.get(0)) score++;
-        if (correctness.get(1)) score++;
+        if (!correctness.get(1)) score++;
         if (correctness.get(2)) score++;
         score = score * 10;
 
