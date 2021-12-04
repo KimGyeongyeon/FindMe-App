@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotHere {
+    public String userMail;
     public GeoPoint latLng;
     public int weight;
 
@@ -19,9 +20,9 @@ public class NotHere {
         this.weight = 5;
     }
 
-    public NotHere(GeoPoint location, int weight){
+    public NotHere(String email, GeoPoint location, int weight){
+        this.userMail = email;
         this.latLng = new GeoPoint(location.getLatitude(), location.getLongitude());
-
         this.weight = weight;
     }
 

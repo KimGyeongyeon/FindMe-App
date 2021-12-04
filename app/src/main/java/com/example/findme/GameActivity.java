@@ -32,12 +32,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
 
     // Game
     List<String> pet_imgs = new ArrayList<>();
+    List<String> qc_imgs = new ArrayList<>();
     List<String> game_imgs = new ArrayList<>();
     List<String> compares = new ArrayList<>();
     List<Boolean> correctness = new ArrayList<>();
@@ -110,8 +112,12 @@ public class GameActivity extends AppCompatActivity {
                                 pet_name_ = (String) document.get("name");
                                 pet_imgs = (List<String>) document.get("img");
 
-                                // Set original.
+                                // Set original, qc list.
                                 Glide.with(original).load(pet_imgs.get(0)).into(original);
+
+                                pet_imgs.remove(0);
+
+                                Collections.shuffle(pet_imgs);
 
                                 // Set pet name.
                                 pet_name.setText("Is this below " + pet_name_ + "?");

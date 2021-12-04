@@ -35,6 +35,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +64,9 @@ public class PetInfoActivity extends AppCompatActivity {
     private static final String KEY_LOCATION = "location";
     private Location lastKnownLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+    private String email;
 
     public String petId;
     public TextView petName;
@@ -85,6 +90,9 @@ public class PetInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         petId = intent.getStringExtra("petId");
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        email = currentUser.getEmail();
 
         // 1) View setting
         setContentView(R.layout.petinfo);
@@ -210,7 +218,7 @@ public class PetInfoActivity extends AppCompatActivity {
                             // Logic to handle location object
 //                             2) weight 설정하기
                                     GeoPoint geo_location = new GeoPoint(location.getLatitude(), location.getLongitude());
-                                    NotHere report = new NotHere(geo_location,5);
+                                    NotHere report = new NotHere(email, geo_location,5);
 
                                     // 3) 문서 이름 정하기
                                     Date cur_time = new Date();
