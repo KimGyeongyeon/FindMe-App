@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -69,12 +70,14 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+    private CollectionReference get;
 
     private static final String TAG = PostActivity.class.getSimpleName();
     String selected = "Rudy";
 //    LatLng location;
 
     public String file_path;
+    public boolean is_others;
     public String documentId;
 
     @Override
@@ -163,6 +166,7 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                 StorageReference imagesRef;
 //                String documentId = "";
 
+                is_others = false;
                 if (selected.equals("Gold")){
                     file_path = "here/Gold/" + filename + ".jpg";
                     documentId = "gwMW4cRBj14MXiSM0dZ9";
@@ -173,6 +177,7 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                     file_path = "here/Milo/" + filename + ".jpg";
                     documentId = "NtWqL5M7kQY7mNtfexsj";
                 } else {
+                    is_others = true;
                     file_path ="new/" + filename + ".jpg";
                 }
                 imagesRef = storageReference.child(file_path);
@@ -199,8 +204,9 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                                     info.put ("latLng", new GeoPoint(loc.getLatitude(), loc.getLongitude()));
                                     info.put("userMail",currentUser.getEmail());
 //                                    if(documentId == null) return;
-                                    db.collection("pet").document(documentId).collection("here")
-                                            .add(info)
+                                    if (is_others) get = db.collection("others");
+                                    else get = db.collection("pet").document(documentId).collection("here");
+                                    get.add(info)
                                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
                                                 public void onSuccess(DocumentReference documentReference) {
