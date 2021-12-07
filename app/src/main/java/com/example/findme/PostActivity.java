@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,7 +28,11 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,12 +43,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -73,12 +82,15 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
     private CollectionReference get;
 
     private static final String TAG = PostActivity.class.getSimpleName();
-    String selected = "Rudy";
+    String selected_name = "others";
+    String selected_id = "";
 //    LatLng location;
 
     public String file_path;
     public boolean is_others;
     public String documentId;
+
+    private ArrayList<missingContainer> missingContainers = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,12 +117,13 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // test missingContainer class
+        getMissingPets();
 
-        missingContainer test1 = new missingContainer("pet-info/Rudy/Rudy_3.PNG", "Rudy");
-        missingContainer test2 = new missingContainer("pet-info/Gold/gold_01_2.jpg", "Gold");
-        missingContainer test3 = new missingContainer("pet-info/milo/milo_4.PNG", "Milo");
-        missingContainer others = new missingContainer("images/white.png", "Others");
-        missingContainer missing[] = {test1, test2, test3, others};
+//        missingContainer test1 = new missingContainer("pet-info/Rudy/Rudy_3.PNG", "Rudy");
+//        missingContainer test2 = new missingContainer("pet-info/Gold/gold_01_2.jpg", "Gold");
+//        missingContainer test3 = new missingContainer("pet-info/milo/milo_4.PNG", "Milo");
+//        missingContainer others = new missingContainer("images/white.png", "Others");
+//        missingContainer missing[] = {test1, test2, test3, others};
 
         missing_spinner = findViewById(R.id.spinner);
         back_button = findViewById(R.id.back);
@@ -120,7 +133,7 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
         camera_image = findViewById(R.id.camera_image);
 
         // Adapt item Adapter for spinner
-        missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missing);
+        missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missingContainers);
         missing_spinner.setAdapter(missingAdapter);
 
         missing_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -128,11 +141,13 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++check > 1) {
-                    Toast toast = Toast.makeText(getBaseContext(), missing[i].name + " selected", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getBaseContext(), missingContainers.get(i).name + " selected", Toast.LENGTH_SHORT);
                     toast.show();
                     missingContainer select = (missingContainer) missing_spinner.getItemAtPosition(i);
-                    selected = select.name;
+                    selected_name = select.name;
+                    selected_id = select.docId;
                 }
+
             }
 
             @Override
@@ -167,19 +182,27 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
 //                String documentId = "";
 
                 is_others = false;
-                if (selected.equals("Gold")){
-                    file_path = "here/Gold/" + filename + ".jpg";
-                    documentId = "gwMW4cRBj14MXiSM0dZ9";
-                } else if (selected.equals("Rudy")){
-                    file_path = "here/Rudy/" + filename + ".jpg";
-                    documentId = "HiTmyu4oVYngQ8mbV1v2";
-                } else if (selected.equals("Milo")) {
-                    file_path = "here/Milo/" + filename + ".jpg";
-                    documentId = "NtWqL5M7kQY7mNtfexsj";
-                } else {
+                if(selected_name.equals("others")){
                     is_others = true;
-                    file_path ="new/" + filename + ".jpg";
+                    file_path = "new/" + filename + ".jpg";
+                } else {
+                    file_path = "here/" + selected_name + "/" + filename + ".jpg";
+                    documentId = selected_id;
                 }
+
+//                if (selected.equals("Gold")){
+//                    file_path = "here/Gold/" + filename + ".jpg";
+//                    documentId = "gwMW4cRBj14MXiSM0dZ9";
+//                } else if (selected.equals("Rudy")){
+//                    file_path = "here/Rudy/" + filename + ".jpg";
+//                    documentId = "HiTmyu4oVYngQ8mbV1v2";
+//                } else if (selected.equals("Milo")) {
+//                    file_path = "here/Milo/" + filename + ".jpg";
+//                    documentId = "NtWqL5M7kQY7mNtfexsj";
+//                } else {
+//                    is_others = true;
+//                    file_path ="new/" + filename + ".jpg";
+//                }
                 imagesRef = storageReference.child(file_path);
 
 //                Log.d("asdf", Double.toString(loc.getLatitude()));
@@ -253,6 +276,30 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
         });
     }
 
+    private void getMissingPets(){
+        Query query = FirebaseFirestore.getInstance().collection("pet");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Firebase", document.getId() + " => " + document.getData());
+
+                        String name = document.getString("name");
+                        String imgPath = document.getString("repImg");
+                        String docId = document.getId();
+                        missingContainers.add(new missingContainer(imgPath, name, docId));
+                    }
+                    missingContainers.add(new missingContainer("images/white.png", "others", null));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+
+            }
+        });
+    }
+
     private void getLocationPermission() {
         /*
          * Request location permission, so that we can get the location of the
@@ -277,36 +324,4 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     public void onNothingSelected(AdapterView<?> parent) {}
 
-//    private void getDeviceLocation() {
-//        /*
-//         * Get the best and most recent location of the device, which may be null in rare
-//         * cases when a location is not available.
-//         */
-//        try {
-//            if (locationPermission) {
-//
-//                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-//                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Location> task) {
-//                        if (task.isSuccessful()) {
-//                            // Set the map's camera position to the current location of the device.
-//                            lastKnownLocation = task.getResult();
-//                            if (lastKnownLocation != null) {
-//                                location = new LatLng(lastKnownLocation.getLatitude(),
-//                                        lastKnownLocation.getLongitude());
-//                            }
-//                        } else {
-//                            Log.d(TAG, "Current location is null. Using defaults.");
-//                            Log.e(TAG, "Exception: %s", task.getException());
-//                            location = new LatLng(-33.8523341, 151.2106085);
-//
-//                        }
-//                    }
-//                });
-//            }
-//        } catch (SecurityException e)  {
-//            Log.e("Exception: %s", e.getMessage(), e);
-//        }
-//    }
 }
