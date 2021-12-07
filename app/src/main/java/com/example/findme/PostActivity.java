@@ -132,10 +132,6 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
         submit_button = findViewById(R.id.submit_button);
         camera_image = findViewById(R.id.camera_image);
 
-        // Adapt item Adapter for spinner
-        missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missingContainers);
-        missing_spinner.setAdapter(missingAdapter);
-
         missing_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             int check = 0;
             @Override
@@ -147,7 +143,6 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                     selected_name = select.name;
                     selected_id = select.docId;
                 }
-
             }
 
             @Override
@@ -177,9 +172,7 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyyy_MM_dd_HH_mm_ss", Locale.KOREA);
                 Date now = new Date();
                 String filename = formatter.format(now);
-//                String file_path ="";
                 StorageReference imagesRef;
-//                String documentId = "";
 
                 is_others = false;
                 if(selected_name.equals("others")){
@@ -189,24 +182,9 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                     file_path = "here/" + selected_name + "/" + filename + ".jpg";
                     documentId = selected_id;
                 }
-
-//                if (selected.equals("Gold")){
-//                    file_path = "here/Gold/" + filename + ".jpg";
-//                    documentId = "gwMW4cRBj14MXiSM0dZ9";
-//                } else if (selected.equals("Rudy")){
-//                    file_path = "here/Rudy/" + filename + ".jpg";
-//                    documentId = "HiTmyu4oVYngQ8mbV1v2";
-//                } else if (selected.equals("Milo")) {
-//                    file_path = "here/Milo/" + filename + ".jpg";
-//                    documentId = "NtWqL5M7kQY7mNtfexsj";
-//                } else {
-//                    is_others = true;
-//                    file_path ="new/" + filename + ".jpg";
-//                }
                 imagesRef = storageReference.child(file_path);
 
-//                Log.d("asdf", Double.toString(loc.getLatitude()));
-
+                // send data.
                 if (ActivityCompat.checkSelfPermission(PostActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(PostActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     getLocationPermission(); }
                 fusedLocationProviderClient.getLastLocation()
@@ -291,6 +269,12 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                         missingContainers.add(new missingContainer(imgPath, name, docId));
                     }
                     missingContainers.add(new missingContainer("images/white.png", "others", null));
+
+                    // Adapt item Adapter for spinner
+                    selected_name = missingContainers.get(0).name;
+                    selected_id = missingContainers.get(0).docId;
+                    missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missingContainers);
+                    missing_spinner.setAdapter(missingAdapter);
                 } else {
                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     Log.d("Firebase", "Error getting documents: ", task.getException());

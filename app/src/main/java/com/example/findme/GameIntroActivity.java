@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +23,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class GameIntroActivity extends AppCompatActivity {
@@ -34,7 +38,17 @@ public class GameIntroActivity extends AppCompatActivity {
     TextView my_score;
     TextView world_record;
     TextView world_record_nickname;
+    Spinner missing_spinner;
     Button start_game;
+
+    String selected_name = "others";
+    String selected_id = "";
+
+    public String file_path;
+    public boolean is_others;
+    public String documentId;
+
+    private ArrayList<missingContainer> missingContainers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +61,7 @@ public class GameIntroActivity extends AppCompatActivity {
         my_score = findViewById(R.id.my_score);
         world_record = findViewById(R.id.world_score);
         world_record_nickname = findViewById(R.id.world_score_nickname);
+        missing_spinner = findViewById(R.id.spinner);
 
         // Get informations from firebase.
         mAuth = FirebaseAuth.getInstance();
@@ -90,6 +105,29 @@ public class GameIntroActivity extends AppCompatActivity {
                     }
                 });
 
+        // test missingContainer class
+        getMissingPets();
+
+        missing_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            int check = 0;
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (++check > 1) {
+                    Toast toast = Toast.makeText(getBaseContext(), missingContainers.get(i).name + " selected", Toast.LENGTH_SHORT);
+                    toast.show();
+                    missingContainer select = (missingContainer) missing_spinner.getItemAtPosition(i);
+                    selected_name = select.name;
+                    selected_id = select.docId;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast toast = Toast.makeText(getBaseContext(), "Nothing was Select", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,9 +140,16 @@ public class GameIntroActivity extends AppCompatActivity {
         start_game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-                startActivity(intent);
-                finish();
+                if (selected_name == "others") {
+                    Toast toast = Toast.makeText(getBaseContext(), "Others game will be implemented. Please select pet.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                    intent.putExtra("petName", selected_name);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }
@@ -113,5 +158,35 @@ public class GameIntroActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void getMissingPets(){
+        Query query = db.collection("pet");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("Firebase", document.getId() + " => " + document.getData());
+
+                        String name = document.getString("name");
+                        String imgPath = document.getString("repImg");
+                        String docId = document.getId();
+                        missingContainers.add(new missingContainer(imgPath, name, docId));
+                    }
+                    missingContainers.add(new missingContainer("images/white.png", "others", null));
+
+                    // Adapt item Adapter for spinner
+                    selected_name = missingContainers.get(0).name;
+                    selected_id = missingContainers.get(0).docId;
+                    missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missingContainers);
+                    missing_spinner.setAdapter(missingAdapter);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+
+            }
+        });
     }
 }

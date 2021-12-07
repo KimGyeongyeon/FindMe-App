@@ -77,6 +77,10 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
 
+        // Get pet info from game intro.
+        Intent intent = getIntent();
+        String petName = (String) intent.getExtras().get("petName");
+
         // Get res.
         bar = findViewById(R.id.progressBar);
         count = findViewById(R.id.count);
@@ -101,7 +105,7 @@ public class GameActivity extends AppCompatActivity {
         gameRef = db.collection("game");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        Query query1 = petInfoRef.whereEqualTo("name", "Gold");
+        Query query1 = petInfoRef.whereEqualTo("name", petName);
         query1.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
