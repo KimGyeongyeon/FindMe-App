@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +28,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -121,42 +121,56 @@ public class GameActivity extends AppCompatActivity {
 
                                 pet_imgs.remove(0);
                                 Collections.shuffle(pet_imgs);
-                                qc_imgs.add(pet_imgs.get(0));
-                                qc_imgs.add("https://firebasestorage.googleapis.com/v0/b/findme-a2f27.appspot.com/o/game%2Fqc2.jpg?alt=media&token=71054502-17d0-4e14-890c-bf2e241c5797");
-                                qc_imgs.add(pet_imgs.get(1));
 
-                                // Set pet name.
-                                pet_name.setText("Is this below " + pet_name_ + "?");
+                                StorageReference qcReference = storageReference.child("game/");
+                                qcReference.listAll()
+                                        .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                                            @Override
+                                            public void onSuccess(ListResult listResult) {
+                                                for (StorageReference item : listResult.getItems()) {
+                                                    item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                        @Override
+                                                        public void onSuccess(Uri uri) {
+                                                            qc_imgs.add(String.valueOf(uri));
+                                                        }
+                                                    });
+                                                }
+                                                // Set pet name.
+                                                pet_name.setText("Is this below " + pet_name_ + "?");
 
-                                // Second query
-                                gameRef = db.collection("pet").document(document.getId()).collection("here");
+                                                // Second query
+                                                gameRef = db.collection("pet").document(document.getId()).collection("here");
 
-                                gameRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                pathReference = storageReference.child((String) document.get("img"));
-                                                pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                gameRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
-                                                    public void onSuccess(Uri uri) {
-                                                        Log.d("uri", String.valueOf(uri));
-                                                        game_imgs.add(String.valueOf(uri));
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                pathReference = storageReference.child((String) document.get("img"));
+                                                                pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                    @Override
+                                                                    public void onSuccess(Uri uri) {
+                                                                        Log.d("uri", String.valueOf(uri));
+                                                                        game_imgs.add(String.valueOf(uri));
+                                                                    }
+                                                                });
+                                                            }
+                                                            Log.d("pet_imgs", pet_imgs.toString());
+                                                            Log.d("qc_imgs", qc_imgs.toString());
+                                                            Log.d("game_imgs", game_imgs.toString());
+                                                            // Set compare List
+                                                            compares = game_imgs;
+                                                            compares.add(pet_imgs.get(0));
+                                                            compares.add(qc_imgs.get(0));
+                                                            compares.add(pet_imgs.get(1));
+                                                            game_start();
+                                                        } else {
+                                                            Log.d("Firebase2", "download here image fail");
+                                                        }
                                                     }
                                                 });
                                             }
-                                            Log.d("Firebase2", game_imgs.toString());
-                                            // Set compare List
-                                            compares = game_imgs;
-                                            compares.add(qc_imgs.get(0));
-                                            compares.add(qc_imgs.get(1));
-                                            compares.add(qc_imgs.get(2));
-                                            game_start();
-                                        } else {
-                                            Log.d("Firebase2", "download here image fail");
-                                        }
-                                    }
-                                });
+                                        });
                             }
                         }
                         else {
