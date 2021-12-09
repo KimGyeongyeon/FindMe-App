@@ -64,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/explain_title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="Guess 10 problems : Are pets in given picture below same as original above?"
+            android:text="Guess 10 problems :\nDo these two animals look the same?"
             android:textSize="10pt"
             android:textAlignment="center"/>
 

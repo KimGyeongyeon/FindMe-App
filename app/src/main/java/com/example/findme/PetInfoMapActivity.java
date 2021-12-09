@@ -83,6 +83,8 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
 
     public String petId;
 
+    public boolean isRun = false;
+
     // [START maps_current_place_on_create]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,18 +117,54 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.petReportsMap);
         mapFragment.getMapAsync(this);
 
-
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                Log.i("asdf", "10 seconds passed");
-//            }
-//        }, 0, 1000); //10000 ms = 10 second
-
         // [END maps_current_place_map_fragment]
     }
     // [END maps_current_place_on_create]
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /* 스레드 실행 */
+        BackgroundThread thread = new BackgroundThread();
+        isRun = true;
+        thread.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        /* 스레드 중지 */
+        isRun = false;
+//        value = 0; //value값 다시 0으로 초기화
+    }
+
+    class BackgroundThread extends Thread{
+
+        @Override
+        public void run() {
+            while(isRun){ // isRun 변수가 true가 되면
+                try{
+                    Thread.sleep(1000); //1초 지연
+//                    value++; //value 값 1 증가
+                    Log.d("nothereupdate", "asdf");
+                    updateNotHereReports();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            try{
+                this.join(); // 스레드를 메인 스레드와 합치기
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        /* isRun이 true인 동안은 계속해서 1초마다 value 값을 1씩 증가시킨다.
+         * 그러다가 isRun이 false가 되면 스레드가 메인 스레드와 합쳐지고 끝이난다.*/
+
+    }
 
 
     private void getNotHereReportsFromFirebase () {
@@ -181,11 +219,49 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                             addHeatMap();
                             break;
                         case MODIFIED:
+                            addHeatMap();
                             break;
                         case REMOVED:
+                            addHeatMap();
                             break;
                     }
                 }
+            }
+        });
+    }
+
+    void updateNotHereReports(){
+        Query query = FirebaseFirestore.getInstance().collection("pet").document("ARSoHu4Dbtn7fMpsgaWk").collection("notHere");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        Date date = document.getDate("date");
+                        Date cur_date = new Date();
+
+                        long mins = (cur_date.getTime() - date.getTime())/(60*1000);
+                        Log.i("nothereupdate", String.valueOf(mins));
+
+                        if(mins > 20){
+                            document.getReference().update("weight", 0);
+                            Log.d("nothereupdate", "weight to 0");
+
+                        }
+                        else if(mins > 10) {
+                            document.getReference().update("weight", 3);
+                            Log.d("nothereupdate", "weight to 3");
+                        }
+
+                        Log.d("notHereUpdate", document.getId() + " => " + document.getData());
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("Firebase", "Error getting documents: ", task.getException());
+                }
+
             }
         });
     }
@@ -284,8 +360,10 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                             addMarker();
                             break;
                         case MODIFIED:
+                            addMarker();
                             break;
                         case REMOVED:
+                            addMarker();
                             break;
                     }
                 }

@@ -218,11 +218,14 @@ public class PetInfoActivity extends AppCompatActivity {
                             // Logic to handle location object
 //                             2) weight 설정하기
                                     GeoPoint geo_location = new GeoPoint(location.getLatitude(), location.getLongitude());
-                                    NotHere report = new NotHere(email, geo_location,5);
+
 
                                     // 3) 문서 이름 정하기
                                     Date cur_time = new Date();
                                     SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_kkmmss");
+
+                                    NotHere report = new NotHere(email, geo_location,5, cur_time);
+
                                     String docs_name = format.format(cur_time);
 
                                     Log.d("PetInfoActivity", "send report to firebase " + docs_name);

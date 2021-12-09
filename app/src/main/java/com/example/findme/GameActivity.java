@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -136,7 +137,7 @@ public class GameActivity extends AppCompatActivity {
                                                     });
                                                 }
                                                 // Set pet name.
-                                                pet_name.setText("Is this below " + pet_name_ + "?");
+                                                pet_name.setText("Does this picture below look like " + pet_name_ + "?");
 
                                                 // Second query
                                                 gameRef = db.collection("pet").document(document.getId()).collection("here");
@@ -155,15 +156,25 @@ public class GameActivity extends AppCompatActivity {
                                                                     }
                                                                 });
                                                             }
-                                                            Log.d("pet_imgs", pet_imgs.toString());
-                                                            Log.d("qc_imgs", qc_imgs.toString());
-                                                            Log.d("game_imgs", game_imgs.toString());
-                                                            // Set compare List
-                                                            compares = game_imgs;
-                                                            compares.add(pet_imgs.get(0));
-                                                            compares.add(qc_imgs.get(0));
-                                                            compares.add(pet_imgs.get(1));
-                                                            game_start();
+                                                            new Handler().postDelayed(new Runnable()
+                                                            {
+                                                                @Override
+                                                                public void run()
+                                                                {
+                                                                    //딜레이 후 시작할 코드 작성
+                                                                    Log.d("pet_imgs", pet_imgs.toString());
+                                                                    Log.d("qc_imgs", qc_imgs.toString());
+                                                                    Log.d("game_imgs", game_imgs.toString());
+
+                                                                    //set compare list
+                                                                    compares = game_imgs;
+                                                                    compares.add(0, pet_imgs.get(0));
+                                                                    compares.add(1, qc_imgs.get(0));
+                                                                    compares.add(2, pet_imgs.get(1));
+                                                                    game_start();
+                                                                }
+                                                            }, 1000);
+
                                                         } else {
                                                             Log.d("Firebase2", "download here image fail");
                                                         }
@@ -220,6 +231,14 @@ public class GameActivity extends AppCompatActivity {
     private void game_start() {
 
         int size = correctness.size();
+
+        if (compares.size() < 10) {
+            toast = Toast.makeText(getBaseContext(), "There are not enough reports to play the game.", Toast.LENGTH_LONG);
+            toast.show();
+            Intent intent = new Intent(getApplicationContext(), GameIntroActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         if (size >= 10) game_end();
         else {

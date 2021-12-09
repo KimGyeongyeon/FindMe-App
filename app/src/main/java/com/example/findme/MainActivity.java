@@ -46,6 +46,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 import java.util.logging.LoggingPermission;
 
 /**
@@ -97,11 +102,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Uri imageUri;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
 
         // [START_EXCLUDE silent]
         // [START maps_current_place_on_create_save_instance_state]
