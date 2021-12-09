@@ -105,7 +105,7 @@
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/compare_picture_layout"
-            android:padding="20dp">
+            android:padding="30dp">
 
             <ImageView
                 android:id="@+id/original_image"
@@ -121,7 +121,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/original_picture_layout"
-            android:padding="20dp">
+            android:padding="30dp">
 
             <ImageView
                 android:id="@+id/compare_image"
