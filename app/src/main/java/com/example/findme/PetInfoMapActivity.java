@@ -121,50 +121,50 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
     }
     // [END maps_current_place_on_create]
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        /* 스레드 실행 */
-        BackgroundThread thread = new BackgroundThread();
-        isRun = true;
-        thread.start();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        /* 스레드 중지 */
-        isRun = false;
-//        value = 0; //value값 다시 0으로 초기화
-    }
-
-    class BackgroundThread extends Thread{
-
-        @Override
-        public void run() {
-            while(isRun){ // isRun 변수가 true가 되면
-                try{
-                    Thread.sleep(1000); //1초 지연
-//                    value++; //value 값 1 증가
-                    Log.d("nothereupdate", "asdf");
-                    updateNotHereReports();
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-
-            try{
-                this.join(); // 스레드를 메인 스레드와 합치기
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-        /* isRun이 true인 동안은 계속해서 1초마다 value 값을 1씩 증가시킨다.
-         * 그러다가 isRun이 false가 되면 스레드가 메인 스레드와 합쳐지고 끝이난다.*/
-
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        /* 스레드 실행 */
+//        BackgroundThread thread = new BackgroundThread();
+//        isRun = true;
+//        thread.start();
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//
+//        /* 스레드 중지 */
+//        isRun = false;
+////        value = 0; //value값 다시 0으로 초기화
+//    }
+//
+//    class BackgroundThread extends Thread{
+//
+//        @Override
+//        public void run() {
+//            while(isRun){ // isRun 변수가 true가 되면
+//                try{
+//                    Thread.sleep(1000); //1초 지연
+////                    value++; //value 값 1 증가
+//                    Log.d("nothereupdate", "asdf");
+//                    updateNotHereReports();
+//                }catch(Exception e){
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            try{
+//                this.join(); // 스레드를 메인 스레드와 합치기
+//            }catch(Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//        /* isRun이 true인 동안은 계속해서 1초마다 value 값을 1씩 증가시킨다.
+//         * 그러다가 isRun이 false가 되면 스레드가 메인 스레드와 합쳐지고 끝이난다.*/
+//
+//    }
 
 
     private void getNotHereReportsFromFirebase () {
@@ -219,10 +219,10 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                             addHeatMap();
                             break;
                         case MODIFIED:
-                            addHeatMap();
+//                            addHeatMap();
                             break;
                         case REMOVED:
-                            addHeatMap();
+//                            addHeatMap();
                             break;
                     }
                 }
@@ -360,10 +360,10 @@ public class PetInfoMapActivity extends AppCompatActivity implements OnMapReadyC
                             addMarker();
                             break;
                         case MODIFIED:
-                            addMarker();
+//                            addMarker();
                             break;
                         case REMOVED:
-                            addMarker();
+//                            addMarker();
                             break;
                     }
                 }
