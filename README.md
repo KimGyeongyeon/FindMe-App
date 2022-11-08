@@ -9,6 +9,8 @@ FindMe는 잃어버린 반려동물을 찾기 위한 플랫폼입니다.
 
 유저 테스트 결과 `HERE` 리포트 제보 접수 이후 10분 이내에 모든 사람들이 타깃을 찾아냈으며, 실종 반려동물을 찾는 일에 관심이 없던 사람들도 해당 서비스와 함께라면 참여할 의사가 있다는 긍정적인 반응을 보였습니다. ( 2.95 → 4.04 / 5.0점 만점)
 
+**프로토 타입 체험하기** ➡ [Go](https://www.figma.com/proto/N8pLIRHiRh46WvIjShYPYu/FindMe?scaling=scale-down&page-id=0%3A1&starting-point-node-id=16%3A22&show-proto-sidebar=1&node-id=16%3A22)
+
 ---
 
 
@@ -29,6 +31,7 @@ FindMe는 잃어버린 반려동물을 찾기 위한 플랫폼입니다.
 ---
 
 ## 기능 소개
+
 
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cd96850c-82fb-446d-9092-c2676af186d4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221108%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221108T065123Z&X-Amz-Expires=86400&X-Amz-Signature=c88fb09c449d0740a87145c072156fb38019027309d2e964037ca6c6b6276c7a&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
 
