@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
-import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -22,6 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.findme.detail.PetInfoActivity;
+import com.example.findme.game.GameIntroActivity;
+import com.example.findme.login.LoginActivity2;
+import com.example.findme.post.PostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,13 +47,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-import java.util.logging.LoggingPermission;
 
 /**
  * An activity that displays a map showing the place at the device's current location.

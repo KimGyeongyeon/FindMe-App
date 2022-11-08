@@ -1,4 +1,4 @@
-package com.example.findme;
+package com.example.findme.detail;
 
 import android.location.Location;
 import android.util.Log;

@@ -3,7 +3,6 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,10 +21,10 @@
         android:usesCleartextTraffic="true"
         android:largeHeap="true">
         <activity
-            android:name=".GameActivity"
+            android:name=".game.GameActivity"
             android:exported="false" />
         <activity
-            android:name=".GameIntroActivity"
+            android:name=".game.GameIntroActivity"
             android:exported="false" />
 
         <meta-data
@@ -42,11 +41,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity2" />
-        <activity android:name=".PostActivity" />
-        <activity android:name=".PetInfoActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".PetInfoMapActivity" />
+        <activity android:name=".login.LoginActivity2" />
+        <activity android:name=".post.PostActivity" />
+        <activity android:name=".detail.PetInfoActivity" />
+        <activity android:name=".login.RegisterActivity" />
+        <activity android:name=".detail.PetInfoMapActivity" />
         <activity android:name=".ShowHereReportsActivity" />
         <service
             android:name=".FireBaseMessagingService"

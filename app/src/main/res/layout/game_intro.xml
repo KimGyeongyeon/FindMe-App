@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameIntroActivity">
+    tools:context=".game.GameIntroActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navigation_bar"

@@ -1,13 +1,11 @@
-package com.example.findme;
+package com.example.findme.post;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,14 +23,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.bumptech.glide.Glide;
+import com.example.findme.MainActivity;
+import com.example.findme.R;
+import com.example.findme.domain.model.MissingContainer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,8 +52,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import io.grpc.Context;
 
 public class PostActivity extends Activity implements AdapterView.OnItemSelectedListener{
 
@@ -90,7 +83,7 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
     public boolean is_others;
     public String documentId;
 
-    private ArrayList<missingContainer> missingContainers = new ArrayList<>();
+    private ArrayList<MissingContainer> missingContainers = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -137,11 +130,11 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++check > 1) {
-                    Toast toast = Toast.makeText(getBaseContext(), missingContainers.get(i).name + " selected", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getBaseContext(), missingContainers.get(i).getName() + " selected", Toast.LENGTH_SHORT);
                     toast.show();
-                    missingContainer select = (missingContainer) missing_spinner.getItemAtPosition(i);
-                    selected_name = select.name;
-                    selected_id = select.docId;
+                    MissingContainer select = (MissingContainer) missing_spinner.getItemAtPosition(i);
+                    selected_name = select.getName();
+                    selected_id = select.getDocId();
                 }
             }
 
@@ -266,13 +259,13 @@ public class PostActivity extends Activity implements AdapterView.OnItemSelected
                         String name = document.getString("name");
                         String imgPath = document.getString("repImg");
                         String docId = document.getId();
-                        missingContainers.add(new missingContainer(imgPath, name, docId));
+                        missingContainers.add(new MissingContainer(imgPath, name, docId));
                     }
-                    missingContainers.add(new missingContainer("images/white.png", "others", null));
+                    missingContainers.add(new MissingContainer("images/white.png", "others", null));
 
                     // Adapt item Adapter for spinner
-                    selected_name = missingContainers.get(0).name;
-                    selected_id = missingContainers.get(0).docId;
+                    selected_name = missingContainers.get(0).getName();
+                    selected_id = missingContainers.get(0).getDocId();
                     missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missingContainers);
                     missing_spinner.setAdapter(missingAdapter);
                 } else {

@@ -1,7 +1,6 @@
-package com.example.findme;
+package com.example.findme.post;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.example.findme.R;
+import com.example.findme.domain.model.MissingContainer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class missingAdapter extends BaseAdapter {
     Context context;
 //    missingContainer flags[];
-    private ArrayList<missingContainer> newflags;
+    private ArrayList<MissingContainer> newflags;
     LayoutInflater inflater;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -35,7 +36,7 @@ public class missingAdapter extends BaseAdapter {
 //        inflater = (LayoutInflater.from(applicationContext));
 //    }
 
-    public missingAdapter(Context applicationContext, ArrayList<missingContainer> newflags) {
+    public missingAdapter(Context applicationContext, ArrayList<MissingContainer> newflags) {
         this.context = applicationContext;
         this.newflags = newflags;
         inflater = (LayoutInflater.from(applicationContext));
@@ -56,12 +57,12 @@ public class missingAdapter extends BaseAdapter {
 
     public String getItemName(int position) {
 //        return flags[position];
-        return newflags.get(position).name;
+        return newflags.get(position).getName();
     }
 
     public String getItemDocId(int position) {
 //        return flags[position];
-        return newflags.get(position).docId;
+        return newflags.get(position).getDocId();
     }
 
     @Override
@@ -78,7 +79,7 @@ public class missingAdapter extends BaseAdapter {
         storageReference = storage.getReference();
 
 //        Toast.makeText(context, newflags.get(i).image_url, Toast.LENGTH_SHORT).show();
-        storageReference.child(newflags.get(i).image_url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child(newflags.get(i).getImage_url()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(context)
@@ -92,7 +93,7 @@ public class missingAdapter extends BaseAdapter {
                 Toast.makeText(context, exception.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        name.setText(newflags.get(i).name);
+        name.setText(newflags.get(i).getName());
         return view;
     }
 }

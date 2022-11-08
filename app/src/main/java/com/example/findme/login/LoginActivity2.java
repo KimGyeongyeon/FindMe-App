@@ -1,4 +1,4 @@
-package com.example.findme;
+package com.example.findme.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.findme.MainActivity;
+import com.example.findme.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,55 +41,48 @@ public class LoginActivity2 extends AppCompatActivity {
 
         InitializeFields();
 
-        NeedNewAccountLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SendUserToRegisterActivity();
-            }
-        });
+        NeedNewAccountLink.setOnClickListener((it) ->
+                {
+                    SendUserToRegisterActivity();
+                }
+        );
 
-        LoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AllowUserToLogin();
-            }
-        });
+        LoginButton.setOnClickListener((it) ->
+                {
+                    AllowUserToLogin();
+                }
+        );
     }
 
     private void AllowUserToLogin() {
         String email = UserEmail.getText().toString();
         String password = UserPassword.getText().toString();
 
-        if (TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email...", Toast.LENGTH_SHORT).show();
         }
 
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please enter password...", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
+        } else {
             loadingBar.setTitle("Sign In");
             loadingBar.setMessage("Please wait...");
             loadingBar.setCanceledOnTouchOutside(true);
             loadingBar.show();
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        SendUserToMainActivity();
-                        Toast.makeText(LoginActivity2.this, "Logged in Successful", Toast.LENGTH_SHORT).show();
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task) ->
+                    {
+                        if (task.isSuccessful()) {
+                            SendUserToMainActivity();
+                            Toast.makeText(LoginActivity2.this, "Logged in Successful", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            String message = task.getException().toString();
+                            Toast.makeText(LoginActivity2.this, "Error : " + message, Toast.LENGTH_SHORT).show();
+                        }
+                        loadingBar.dismiss();
 
                     }
-
-                    else {
-                        String message = task.getException().toString();
-                        Toast.makeText(LoginActivity2.this, "Error : " + message, Toast.LENGTH_SHORT).show();
-                    }
-                    loadingBar.dismiss();
-
-                }
-            });
+            );
         }
     }
 

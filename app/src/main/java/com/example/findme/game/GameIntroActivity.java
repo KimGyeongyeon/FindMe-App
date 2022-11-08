@@ -1,4 +1,4 @@
-package com.example.findme;
+package com.example.findme.game;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.findme.MainActivity;
+import com.example.findme.R;
+import com.example.findme.domain.model.MissingContainer;
+import com.example.findme.post.missingAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +52,7 @@ public class GameIntroActivity extends AppCompatActivity {
     public boolean is_others;
     public String documentId;
 
-    private ArrayList<missingContainer> missingContainers = new ArrayList<>();
+    private ArrayList<MissingContainer> missingContainers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,11 +117,11 @@ public class GameIntroActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (++check > 1) {
-                    Toast toast = Toast.makeText(getBaseContext(), missingContainers.get(i).name + " selected", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getBaseContext(), missingContainers.get(i).getName() + " selected", Toast.LENGTH_SHORT);
                     toast.show();
-                    missingContainer select = (missingContainer) missing_spinner.getItemAtPosition(i);
-                    selected_name = select.name;
-                    selected_id = select.docId;
+                    MissingContainer select = (MissingContainer) missing_spinner.getItemAtPosition(i);
+                    selected_name = select.getName();
+                    selected_id = select.getDocId();
                 }
             }
 
@@ -172,13 +176,13 @@ public class GameIntroActivity extends AppCompatActivity {
                         String name = document.getString("name");
                         String imgPath = document.getString("repImg");
                         String docId = document.getId();
-                        missingContainers.add(new missingContainer(imgPath, name, docId));
+                        missingContainers.add(new MissingContainer(imgPath, name, docId));
                     }
-                    missingContainers.add(new missingContainer("images/white.png", "others", null));
+                    missingContainers.add(new MissingContainer("images/white.png", "others", null));
 
                     // Adapt item Adapter for spinner
-                    selected_name = missingContainers.get(0).name;
-                    selected_id = missingContainers.get(0).docId;
+                    selected_name = missingContainers.get(0).getName();
+                    selected_id = missingContainers.get(0).getDocId();
                     missingAdapter missingAdapter = new missingAdapter(getApplicationContext(), missingContainers);
                     missing_spinner.setAdapter(missingAdapter);
                 } else {

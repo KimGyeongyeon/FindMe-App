@@ -1,4 +1,4 @@
-package com.example.findme;
+package com.example.findme.detail;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.findme.MainActivity;
+import com.example.findme.R;
+import com.example.findme.ShowHereReportsActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
