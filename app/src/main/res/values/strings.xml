@@ -11,4 +11,5 @@
     <string name="date_default">10.10.2021</string>
     <string name="pet_info">Pet Info</string>
     <string name="location">Location</string>
+    <string name="sign_text">Sign</string>
 </resources>

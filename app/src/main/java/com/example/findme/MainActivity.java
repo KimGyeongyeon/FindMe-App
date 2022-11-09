@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.findme.detail.PetInfoActivity;
 import com.example.findme.game.GameIntroActivity;
-import com.example.findme.login.LoginActivity2;
+import com.example.findme.login.LoginActivity;
 import com.example.findme.post.PostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -103,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
+        if (currentUser == null) {
+            SendUserToLoginActivity();
+        }
 
         // [START_EXCLUDE silent]
         // [START maps_current_place_on_create_save_instance_state]
@@ -409,16 +411,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     // [END maps_current_place_on_request_permissions_result]
 
-    @Override
-    public void onStart() {
-        if (currentUser == null) {
-            SendUserToLoginActivity();
-        }
-        super.onStart();
-    }
-
     private void SendUserToLoginActivity() {
-        Intent loginIntent = new Intent(MainActivity.this, LoginActivity2.class);
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
     }
 
