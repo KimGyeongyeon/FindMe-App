@@ -38,6 +38,9 @@ public class LoginActivity2 extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            SendUserToMainActivity();
+        }
 
         InitializeFields();
 
@@ -93,15 +96,6 @@ public class LoginActivity2 extends AppCompatActivity {
         NeedNewAccountLink = (TextView) findViewById(R.id.new_account_link);
         ForgetPasswordLink = (TextView) findViewById(R.id.forget_password_link);
         loadingBar = new ProgressDialog(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (currentUser != null) {
-            SendUserToMainActivity();
-        }
     }
 
     private void SendUserToMainActivity() {
