@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.findme.detail.PetInfoActivity;
 import com.example.findme.game.GameIntroActivity;
-import com.example.findme.login.LoginActivity;
+import com.example.findme.login.KtLoginActivity;
 import com.example.findme.post.PostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // [END maps_current_place_on_request_permissions_result]
 
     private void SendUserToLoginActivity() {
-        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent loginIntent = new Intent(MainActivity.this, KtLoginActivity.class);
         startActivity(loginIntent);
     }
 
