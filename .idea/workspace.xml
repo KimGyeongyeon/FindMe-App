@@ -6,6 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="k001" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
@@ -13,34 +14,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e29ab234-16e8-433a-84fd-a52bbeb857e9" name="Changes" comment="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/KtLoginActivity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginFragment.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/RegisterFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/sha1-checksums.bin" afterDir="false" />
+    <list default="true" id="e29ab234-16e8-433a-84fd-a52bbeb857e9" name="Changes" comment="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기">
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/findme/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/RegisterActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/RegisterFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +98,7 @@
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable-mdpi" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../TestChat" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BoostSearch" />
     <property name="memory.settings.postsync.last.time.stamp" value="1639063433528" />
     <property name="ml.local.models.training.notification.expired" value="true" />
     <property name="project.structure.last.edited" value="Project" />
@@ -457,7 +438,28 @@
       <option name="project" value="LOCAL" />
       <updated>1668083493281</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함">
+      <created>1668088829572</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1668088829572</updated>
+    </task>
+    <task id="LOCAL-00013" summary="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함">
+      <created>1668088877560</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1668088877560</updated>
+    </task>
+    <task id="LOCAL-00014" summary="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기">
+      <created>1668091443972</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1668091443972</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -471,7 +473,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="feature/restore-server" />
+                        <option value="feature/login" />
                       </list>
                     </value>
                   </entry>
@@ -498,7 +500,8 @@
     <MESSAGE value="featrue : 로그인 Fragment 흐름 구현&#10;&#10;- 콜백으로 액티비티와 통신" />
     <MESSAGE value="featrue : 회원가입 Fragment 흐름 구현&#10;&#10;- 콜백으로 액티비티와 통신" />
     <MESSAGE value="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함" />
-    <option name="LAST_COMMIT_MESSAGE" value="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함" />
+    <MESSAGE value="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기" />
+    <option name="LAST_COMMIT_MESSAGE" value="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

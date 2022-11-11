@@ -12,8 +12,9 @@
     <string name="pet_info">Pet Info</string>
     <string name="location">Location</string>
     <string name="sign_text">Sign</string>
-    <string name="email_hint">Email...</string>
-    <string name="password_hint">Password...</string>
+    <string name="email_hint">Email…</string>
+    <string name="password_hint">Password…</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="new_account">Need New Account?</string>
+    <string name="login_fail">로그인에 실패했습니다.</string>
 </resources>

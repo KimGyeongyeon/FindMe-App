@@ -50,7 +50,7 @@ class RegisterFragment : Fragment() {
     private fun SendUserToMainPage() {
         try {
             val signEndCallback: OnSignEndListener? = activity as KtLoginActivity?
-            signEndCallback!!.onSignEnd()
+            signEndCallback!!.onSignSuccess()
         } catch (e: Exception) {
             e.printStackTrace()
         }
