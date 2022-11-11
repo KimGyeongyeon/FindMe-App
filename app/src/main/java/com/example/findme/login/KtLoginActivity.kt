@@ -26,7 +26,7 @@ class KtLoginActivity : AppCompatActivity(), OnSignEndListener {
         finish() // 결과를 부모 activity로 전달
     }
 
-    override fun onFail() {
+    override fun onSignFail() {
         Snackbar.make(
             binding.root,
             R.string.login_fail,

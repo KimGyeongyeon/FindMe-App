@@ -14,15 +14,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e29ab234-16e8-433a-84fd-a52bbeb857e9" name="Changes" comment="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기">
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/findme/login/LoginViewModel.kt" afterDir="false" />
-    </list>
+    <list default="true" id="e29ab234-16e8-433a-84fd-a52bbeb857e9" name="Changes" comment="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -459,7 +451,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668091443972</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기">
+      <created>1668148813220</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1668148813220</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

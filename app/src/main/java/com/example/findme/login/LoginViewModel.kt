@@ -31,7 +31,7 @@ class LoginViewModel: ViewModel() {
 
     fun signIn(email: String, password: String, onSignEndListener: OnSignEndListener){
         if (email.isEmpty() || password.isEmpty()) {
-            onSignEndListener.onFail()
+            onSignEndListener.onSignFail()
             return
         }
         val loginJob = viewModelScope.launch(dispatcherIO) {
@@ -44,14 +44,14 @@ class LoginViewModel: ViewModel() {
                         onSignEndListener.onSignSuccess()
                     } else {
                         Log.d("K001", "실패")
-                        onSignEndListener.onFail()
+                        onSignEndListener.onSignFail()
                     }
                 }
         }
         viewModelScope.launch {
             delay(TIME_LIMIT)
             loginJob.cancel()
-            onSignEndListener.onFail()
+            onSignEndListener.onSignFail()
         }
     }
 

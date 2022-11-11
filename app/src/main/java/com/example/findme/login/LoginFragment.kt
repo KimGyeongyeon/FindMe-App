@@ -68,10 +68,10 @@ class LoginFragment : Fragment(), OnSignEndListener {
 
     }
 
-    override fun onFail() {
+    override fun onSignFail() {
         loadingBar.dismiss()
         if(activity is OnSignEndListener){
-            (activity as OnSignEndListener).onFail()
+            (activity as OnSignEndListener).onSignFail()
         }
     }
 
