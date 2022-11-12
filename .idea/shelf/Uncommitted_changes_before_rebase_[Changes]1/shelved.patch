@@ -1,0 +1,1435 @@
+Index: app/src/main/java/com/example/findme/login/RegisterFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.findme.login\r\n\r\nimport com.google.firebase.auth.FirebaseAuth\r\nimport android.view.LayoutInflater\r\nimport android.view.ViewGroup\r\nimport android.os.Bundle\r\nimport com.example.findme.R\r\nimport android.text.TextUtils\r\nimport android.util.Log\r\nimport android.view.View\r\nimport android.widget.Toast\r\nimport androidx.fragment.app.Fragment\r\nimport com.example.findme.databinding.ActivityRegisterBinding\r\nimport java.lang.Exception\r\n\r\nclass RegisterFragment : Fragment() {\r\n    private var _binding: ActivityRegisterBinding? = null\r\n    private val binding get() = _binding!!\r\n\r\n    private var mAuth: FirebaseAuth? = null\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater,\r\n        container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View {\r\n        _binding = ActivityRegisterBinding.inflate(inflater, container, false)\r\n        return binding.root\r\n    }\r\n\r\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n        super.onViewCreated(view, savedInstanceState)\r\n        mAuth = FirebaseAuth.getInstance()\r\n        binding.registerButton.setOnClickListener { clickedView: View? -> CreateNewAccount() }\r\n    }\r\n\r\n    override fun onDestroy() {\r\n        super.onDestroy()\r\n        _binding = null\r\n    }\r\n\r\n    private fun SendUserToLoginActivity() {\r\n        val registerFragment: Fragment = LoginFragment()\r\n        val transaction = parentFragmentManager.beginTransaction()\r\n        transaction.replace(R.id.login_host_fragment, registerFragment)\r\n        transaction.addToBackStack(null)\r\n        transaction.commit()\r\n    }\r\n\r\n    private fun SendUserToMainPage() {\r\n        try {\r\n            val signEndCallback: OnSignEndListener? = activity as KtLoginActivity?\r\n            signEndCallback!!.onSignSuccess()\r\n        } catch (e: Exception) {\r\n            e.printStackTrace()\r\n        }\r\n    }\r\n\r\n    private fun CreateNewAccount() {\r\n        Log.d(\"K001\", \"버튼클릭\")\r\n        val email = binding.registerEmail.text.toString()\r\n        val password = binding.registerPassword.text.toString()\r\n        if (TextUtils.isEmpty(email)) {\r\n            Toast.makeText(context, \"Please enter email...\", Toast.LENGTH_SHORT).show()\r\n        }\r\n        if (TextUtils.isEmpty(password)) {\r\n            Toast.makeText(context, \"Please enter password...\", Toast.LENGTH_SHORT).show()\r\n        } else {\r\n//            ProgressDialog loadingBar = new ProgressDialog(getContext());\r\n//            loadingBar.setTitle(\"Creating New Account\");\r\n//            loadingBar.setMessage(\"Please wait, we are creating new account for you ... \");\r\n//            loadingBar.setCanceledOnTouchOutside(true);\r\n//            loadingBar.show();\r\n            Log.d(\"K001\", \"조건 검사 통과\")\r\n            mAuth!!.createUserWithEmailAndPassword(email, password)\r\n                .addOnCompleteListener(requireActivity()) { task ->\r\n                    if (task.isSuccessful) {\r\n                        Log.d(\"K001\", \"createUserWithEmail:success\")\r\n                        val user = mAuth!!.currentUser\r\n                        SendUserToLoginActivity()\r\n                        // Post user information.\r\n//                        db = FirebaseFirestore.getInstance();\r\n//                        userRef = db.collection(\"user\");\r\n//                        Map<String, Object> data = new HashMap<>();\r\n//                        String[] temp = email.split(\"@\");\r\n//                        data.put(\"NickName\", temp[0]);\r\n//                        data.put(\"Score\", 0);\r\n//                        data.put(\"Uid\", user.getUid());\r\n//                        data.put(\"gameCount\", 0);\r\n//                        userRef.add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {\r\n//                            @Override\r\n//                            public void onSuccess(DocumentReference documentReference) {\r\n//                                Log.d(\"FIREBASE\", \"create account\");\r\n//                                SendUserToLoginActivity();\r\n//                            }\r\n//                        });\r\n                    } else {\r\n                        val message = task.exception.toString()\r\n                        Toast.makeText(context, \"Error : $message\", Toast.LENGTH_SHORT).show()\r\n                    }\r\n                    //                    loadingBar.dismiss();\r\n                }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/findme/login/RegisterFragment.kt b/app/src/main/java/com/example/findme/login/RegisterFragment.kt
+--- a/app/src/main/java/com/example/findme/login/RegisterFragment.kt	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ b/app/src/main/java/com/example/findme/login/RegisterFragment.kt	(date 1668242422873)
+@@ -39,7 +39,7 @@
+         _binding = null
+     }
+ 
+-    private fun SendUserToLoginActivity() {
++    private fun sendUserToLoginActivity() {
+         val registerFragment: Fragment = LoginFragment()
+         val transaction = parentFragmentManager.beginTransaction()
+         transaction.replace(R.id.login_host_fragment, registerFragment)
+@@ -47,7 +47,7 @@
+         transaction.commit()
+     }
+ 
+-    private fun SendUserToMainPage() {
++    private fun sendUserToMainPage() {
+         try {
+             val signEndCallback: OnSignEndListener? = activity as KtLoginActivity?
+             signEndCallback!!.onSignSuccess()
+@@ -77,7 +77,7 @@
+                     if (task.isSuccessful) {
+                         Log.d("K001", "createUserWithEmail:success")
+                         val user = mAuth!!.currentUser
+-                        SendUserToLoginActivity()
++                        sendUserToMainPage()
+                         // Post user information.
+ //                        db = FirebaseFirestore.getInstance();
+ //                        userRef = db.collection("user");
+Index: .idea/modules/app/real_FindMe.FindMe.app.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules/app/real_FindMe.FindMe.app.iml b/.idea/modules/app/real_FindMe.FindMe.app.iml
+deleted file mode 100644
+--- a/.idea/modules/app/real_FindMe.FindMe.app.iml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,125 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="JAVA_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+-    <output url="file://$MODULE_DIR$/../../../app/build/intermediates/javac/debug/classes" />
+-    <output-test url="file://$MODULE_DIR$/../../../app/build/intermediates/javac/debugUnitTest/classes" />
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../app">
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/res/google-services/debug" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/res/resValues/debug" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/androidTest/java" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/java" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/res" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/java" isTestSource="true" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../app/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../app/build" />
+-    </content>
+-    <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.13.2" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-integration:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-library:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup:javawriter:2.1.1" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: javax.inject:javax.inject:1" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio:1.6.0" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.errorprone:error_prone_annotations:2.3.4" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.ext:junit:1.1.3@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-core:3.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:runner:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:core:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.services:storage:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:monitor:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.arch.core:core-runtime:2.0.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-idling-resource:3.4.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.3.1" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.2.0" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout-solver:2.0.4" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-annotations:16.0.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-protobuf-lite:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-javalite:3.17.2" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-okhttp:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" level="project" />
+-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.17.5" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-core:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-stub:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-api:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-context:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.guava:guava:30.1-android" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.guava:failureaccess:1.0.1" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+-    <orderEntry type="library" name="Gradle: org.checkerframework:checker-compat-qual:2.5.5" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.9.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:1.3" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.11.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.11.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-maps:17.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.material:material:1.4.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:2.0.4@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth:21.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:glide:4.11.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-location:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-firestore:24.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database:20.0.2@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage:20.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-appcheck-interop:16.0.0-beta02@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-collection:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-api-phone:17.4.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-safetynet:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base:17.5.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-places-placereport:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth-interop:20.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common:20.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks:17.2.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement:17.5.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.viewpager2:viewpager2:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.3.6@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.activity:activity:1.2.4@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat-resources:1.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.browser:browser:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-ui:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.drawerlayout:drawerlayout:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.coordinatorlayout:coordinatorlayout:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.dynamicanimation:dynamicanimation:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.recyclerview:recyclerview:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.transition:transition:1.2.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable-animated:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-utils:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.loader:loader:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.slidingpanelayout:slidingpanelayout:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.customview:customview:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.swiperefreshlayout:swiperefreshlayout:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.asynclayoutinflater:asynclayoutinflater:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.core:core:1.5.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.cursoradapter:cursoradapter:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.cardview:cardview:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-components:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.versionedparcelable:versionedparcelable:1.1.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:gifdecoder:4.11.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.exifinterface:exifinterface:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:2.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.documentfile:documentfile:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.print:print:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.annotation:annotation-experimental:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.maps.android:android-maps-utils:0.4.4@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:protolite-well-known-types:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-android:1.41.0@aar" level="project" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/assetWizardSettings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/assetWizardSettings.xml b/.idea/assetWizardSettings.xml
+deleted file mode 100644
+--- a/.idea/assetWizardSettings.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,302 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="WizardSettings">
+-    <option name="children">
+-      <map>
+-        <entry key="imageWizard">
+-          <value>
+-            <PersistentState>
+-              <option name="children">
+-                <map>
+-                  <entry key="imageAssetPanel">
+-                    <value>
+-                      <PersistentState>
+-                        <option name="children">
+-                          <map>
+-                            <entry key="actionbar">
+-                              <value>
+-                                <PersistentState>
+-                                  <option name="children">
+-                                    <map>
+-                                      <entry key="clipArt">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                                <entry key="imagePath" value="C:\Users\KimGyengyeon\AppData\Local\Temp\ic_android_black_24dp.xml" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="text">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="textAsset">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                    </map>
+-                                  </option>
+-                                </PersistentState>
+-                              </value>
+-                            </entry>
+-                            <entry key="launcher">
+-                              <value>
+-                                <PersistentState>
+-                                  <option name="children">
+-                                    <map>
+-                                      <entry key="foregroundClipArt">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="imagePath" value="C:\Users\KimGyengyeon\AppData\Local\Temp\ic_android_black_24dp.xml" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="foregroundImage">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                                <entry key="imagePath" value="C:\Users\KimGyengyeon\Pictures\FindMe_image\cat_icon_square.png" />
+-                                                <entry key="scalingPercent" value="70" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="foregroundText">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="foregroundTextAsset">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                    </map>
+-                                  </option>
+-                                  <option name="values">
+-                                    <map>
+-                                      <entry key="outputName" value="cat_launcher" />
+-                                    </map>
+-                                  </option>
+-                                </PersistentState>
+-                              </value>
+-                            </entry>
+-                            <entry key="launcherLegacy">
+-                              <value>
+-                                <PersistentState>
+-                                  <option name="children">
+-                                    <map>
+-                                      <entry key="clipArt">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                                <entry key="imagePath" value="C:\Users\KimGyengyeon\AppData\Local\Temp\ic_android_black_24dp.xml" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="text">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="textAsset">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                    </map>
+-                                  </option>
+-                                </PersistentState>
+-                              </value>
+-                            </entry>
+-                            <entry key="notification">
+-                              <value>
+-                                <PersistentState>
+-                                  <option name="children">
+-                                    <map>
+-                                      <entry key="clipArt">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                                <entry key="imagePath" value="C:\Users\KimGyengyeon\AppData\Local\Temp\ic_android_black_24dp.xml" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="text">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="textAsset">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                    </map>
+-                                  </option>
+-                                </PersistentState>
+-                              </value>
+-                            </entry>
+-                            <entry key="tvBanner">
+-                              <value>
+-                                <PersistentState>
+-                                  <option name="children">
+-                                    <map>
+-                                      <entry key="foregroundText">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                    </map>
+-                                  </option>
+-                                </PersistentState>
+-                              </value>
+-                            </entry>
+-                            <entry key="tvChannel">
+-                              <value>
+-                                <PersistentState>
+-                                  <option name="children">
+-                                    <map>
+-                                      <entry key="foregroundClipArt">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="imagePath" value="C:\Users\KimGyengyeon\AppData\Local\Temp\ic_android_black_24dp.xml" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="foregroundImage">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="foregroundText">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                      <entry key="foregroundTextAsset">
+-                                        <value>
+-                                          <PersistentState>
+-                                            <option name="values">
+-                                              <map>
+-                                                <entry key="color" value="000000" />
+-                                              </map>
+-                                            </option>
+-                                          </PersistentState>
+-                                        </value>
+-                                      </entry>
+-                                    </map>
+-                                  </option>
+-                                </PersistentState>
+-                              </value>
+-                            </entry>
+-                          </map>
+-                        </option>
+-                      </PersistentState>
+-                    </value>
+-                  </entry>
+-                </map>
+-              </option>
+-            </PersistentState>
+-          </value>
+-        </entry>
+-        <entry key="vectorWizard">
+-          <value>
+-            <PersistentState />
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+deleted file mode 100644
+--- a/.idea/vcs.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-    <mapping directory="" vcs="Git" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+deleted file mode 100644
+--- a/.idea/compiler.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="11" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+deleted file mode 100644
+--- a/.idea/gradle.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,19 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="GradleMigrationSettings" migrationVersion="1" />
+-  <component name="GradleSettings">
+-    <option name="linkedExternalProjectsSettings">
+-      <GradleProjectSettings>
+-        <option name="testRunner" value="GRADLE" />
+-        <option name="distributionType" value="DEFAULT_WRAPPED" />
+-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="modules">
+-          <set>
+-            <option value="$PROJECT_DIR$" />
+-            <option value="$PROJECT_DIR$/app" />
+-          </set>
+-        </option>
+-      </GradleProjectSettings>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+deleted file mode 100644
+--- a/.idea/misc.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,40 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="DesignSurface">
+-    <option name="filePathToZoomLevelMap">
+-      <map>
+-        <entry key="..\:/Users/KimGyengyeon/AndroidStudioProjects/real_FindMe/app/src/main/res/layout/group_item.xml" value="0.1" />
+-        <entry key="..\:/Users/KimGyengyeon/AndroidStudioProjects/real_FindMe/app/src/main/res/layout/main.xml" value="0.17916666666666667" />
+-        <entry key="..\:/Users/KimGyengyeon/AndroidStudioProjects/real_FindMe/app/src/main/res/layout/petinfo.xml" value="0.17916666666666667" />
+-        <entry key="..\:/Users/KimGyengyeon/AndroidStudioProjects/real_FindMe/app/src/main/res/layout/petinfomap.xml" value="0.22" />
+-        <entry key="..\:/Users/KimGyengyeon/AndroidStudioProjects/real_FindMe/app/src/main/res/layout/post.xml" value="0.17916666666666667" />
+-        <entry key="..\:/Users/KimGyengyeon/AndroidStudioProjects/real_FindMe/app/src/main/res/mipmap-anydpi-v26/cat_launcher.xml" value="0.1" />
+-        <entry key="app/src/main/res/drawable/inputs.xml" value="0.1565" />
+-        <entry key="app/src/main/res/layout/game.xml" value="0.1453125" />
+-        <entry key="app/src/main/res/layout/game_intro.xml" value="0.4192321386737832" />
+-        <entry key="app/src/main/res/layout/group_item.xml" value="0.1983695652173913" />
+-        <entry key="app/src/main/res/layout/here.xml" value="0.1" />
+-        <entry key="app/src/main/res/layout/login.xml" value="0.14895833333333333" />
+-        <entry key="app/src/main/res/layout/main.xml" value="0.13737945556640624" />
+-        <entry key="app/src/main/res/layout/petinfo.xml" value="0.13229166666666667" />
+-        <entry key="app/src/main/res/layout/petinfomap.xml" value="0.13229166666666667" />
+-        <entry key="app/src/main/res/layout/post.xml" value="0.1" />
+-        <entry key="app/src/main/res/layout/spinner.xml" value="0.13229166666666667" />
+-      </map>
+-    </option>
+-  </component>
+-  <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/build/classes" />
+-  </component>
+-  <component name="ProjectType">
+-    <option name="id" value="Android" />
+-  </component>
+-  <component name="VisualizationToolProject">
+-    <option name="state">
+-      <ProjectState>
+-        <option name="scale" value="0.13994565217391305" />
+-      </ProjectState>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+deleted file mode 100644
+--- a/.idea/deploymentTargetDropDown.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,17 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="deploymentTargetDropDown">
+-    <targetSelectedWithDropDown>
+-      <Target>
+-        <type value="QUICK_BOOT_TARGET" />
+-        <deviceKey>
+-          <Key>
+-            <type value="VIRTUAL_DEVICE_PATH" />
+-            <value value="C:\Users\KimGyengyeon\.android\avd\Pixel_2_API_24.avd" />
+-          </Key>
+-        </deviceKey>
+-      </Target>
+-    </targetSelectedWithDropDown>
+-    <timeTargetWasSelectedWithDropDown value="2021-11-15T18:56:17.317254700Z" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/modules/app/FindMe-App.FindMe.app.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules/app/FindMe-App.FindMe.app.iml b/.idea/modules/app/FindMe-App.FindMe.app.iml
+deleted file mode 100644
+--- a/.idea/modules/app/FindMe-App.FindMe.app.iml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,164 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="JAVA_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+-    <output url="file://$MODULE_DIR$/../../../app/build/intermediates/javac/debug/classes" />
+-    <output-test url="file://$MODULE_DIR$/../../../app/build/intermediates/javac/debugUnitTest/classes" />
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../app">
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/androidTest/java" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/java" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/res" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/java" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/res/resValues/debug" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../app/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../app/build" />
+-    </content>
+-    <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.13.2" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-integration:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-library:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup:javawriter:2.1.1" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: io.reactivex.rxjava3:rxjava:3.0.0" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio:1.6.0" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.errorprone:error_prone_annotations:2.3.4" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.ext:junit:1.1.3@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-core:3.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:runner:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:core:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.services:storage:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:monitor:1.4.0@aar" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-idling-resource:3.4.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.3.1" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.paging:paging-common:3.0.0" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-encoders:17.0.0" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.2.0" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout-solver:2.0.4" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-annotations:16.0.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-protobuf-lite:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-javalite:3.17.2" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-okhttp:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" level="project" />
+-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.17.5" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-core:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-stub:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-api:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-context:1.41.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.guava:guava:30.1-android" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.guava:failureaccess:1.0.1" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+-    <orderEntry type="library" name="Gradle: org.checkerframework:checker-compat-qual:2.5.5" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.9.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:1.3" level="project" />
+-    <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
+-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.4.3" level="project" />
+-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.4.31" level="project" />
+-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.31" level="project" />
+-    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+-    <orderEntry type="library" name="Gradle: io.reactivex.rxjava3:rxjava:3.0.2" level="project" />
+-    <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.3" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.11.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.11.0" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-maps:17.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.material:material:1.4.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:2.0.4@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth:21.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:glide:4.11.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-location:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-database:6.2.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database:20.0.2@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage:20.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-firestore:8.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-firestore:24.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-api-phone:17.4.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-safetynet:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-appcheck-interop:16.0.0-beta02@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-collection:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base:17.5.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-messaging:23.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-places-placereport:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth-interop:20.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics:19.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-api:19.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-installations:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-datatransport:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common:20.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-cloud-messaging:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid-interop:17.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-installations-interop:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks:17.2.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement:19.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-sdk:19.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-impl:19.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-stats:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-measurement-connector:19.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-identifier:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-sdk-api:19.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-base:19.0.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement:17.5.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.sothree.slidinguppanel:library:3.4.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-v4:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.viewpager2:viewpager2:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.3.6@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.recyclerview:recyclerview:1.2.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.activity:activity:1.2.4@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat-resources:1.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.browser:browser:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-ui:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.drawerlayout:drawerlayout:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.coordinatorlayout:coordinatorlayout:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.dynamicanimation:dynamicanimation:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.transition:transition:1.2.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable-animated:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-utils:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.loader:loader:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.media:media:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.slidingpanelayout:slidingpanelayout:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.customview:customview:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.swiperefreshlayout:swiperefreshlayout:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.asynclayoutinflater:asynclayoutinflater:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.core:core:1.5.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.cursoradapter:cursoradapter:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate:1.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.cardview:cardview:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-common:8.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.versionedparcelable:versionedparcelable:1.1.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-components:17.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:gifdecoder:4.11.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.exifinterface:exifinterface:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-backend-cct:3.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-runtime:3.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-api:3.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:2.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.3.1@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.paging:paging-rxjava3:3.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.1.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-encoders-json:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.documentfile:documentfile:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.print:print:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: androidx.annotation:annotation-experimental:1.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.maps.android:android-maps-utils:0.4.4@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: com.google.firebase:protolite-well-known-types:18.0.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: io.grpc:grpc-android:1.41.0@aar" level="project" />
+-    <orderEntry type="library" name="Gradle: de.hdodenhof:circleimageview:3.1.0@aar" level="project" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/navEditor.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/navEditor.xml b/.idea/navEditor.xml
+deleted file mode 100644
+--- a/.idea/navEditor.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,43 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="navEditor-manualLayoutAlgorithm2">
+-    <option name="myPositions">
+-      <map>
+-        <entry key="login_navigation.xml">
+-          <value>
+-            <LayoutPositions>
+-              <option name="myPositions">
+-                <map>
+-                  <entry key="loginFragment">
+-                    <value>
+-                      <LayoutPositions>
+-                        <option name="myPosition">
+-                          <Point>
+-                            <option name="x" value="-171" />
+-                            <option name="y" value="18" />
+-                          </Point>
+-                        </option>
+-                      </LayoutPositions>
+-                    </value>
+-                  </entry>
+-                  <entry key="registerFragment">
+-                    <value>
+-                      <LayoutPositions>
+-                        <option name="myPosition">
+-                          <Point>
+-                            <option name="x" value="45" />
+-                            <option name="y" value="17" />
+-                          </Point>
+-                        </option>
+-                      </LayoutPositions>
+-                    </value>
+-                  </entry>
+-                </map>
+-              </option>
+-            </LayoutPositions>
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+deleted file mode 100644
+--- a/.idea/workspace.xml	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
++++ /dev/null	(revision de9a6e9e2f0e0e0c1e33f299d2594ffe458c99de)
+@@ -1,566 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="AndroidLayouts">
+-    <shared>
+-      <config />
+-    </shared>
+-  </component>
+-  <component name="AndroidLogFilters">
+-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="k001" />
+-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+-  </component>
+-  <component name="AutoImportSettings">
+-    <option name="autoReloadType" value="NONE" />
+-  </component>
+-  <component name="ChangeListManager">
+-    <list default="true" id="e29ab234-16e8-433a-84fd-a52bbeb857e9" name="Changes" comment="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기" />
+-    <option name="SHOW_DIALOG" value="false" />
+-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+-    <option name="LAST_RESOLUTION" value="IGNORE" />
+-  </component>
+-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\KimGyengyeon\.android\avd\MobilePhone_1.avd]" />
+-  <component name="ExternalProjectsData">
+-    <projectState path="$PROJECT_DIR$">
+-      <ProjectState />
+-    </projectState>
+-  </component>
+-  <component name="ExternalProjectsManager">
+-    <system id="GRADLE">
+-      <state>
+-        <projects_view>
+-          <tree_state>
+-            <expand>
+-              <path>
+-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+-                <item name="FindMe-App" type="f1a62948:ProjectNode" />
+-              </path>
+-            </expand>
+-            <select />
+-          </tree_state>
+-        </projects_view>
+-      </state>
+-    </system>
+-  </component>
+-  <component name="FileTemplateManagerImpl">
+-    <option name="RECENT_TEMPLATES">
+-      <list>
+-        <option value="Class" />
+-        <option value="layoutResourceFile" />
+-        <option value="navigationResourceFile" />
+-        <option value="Interface" />
+-        <option value="Kotlin Class" />
+-      </list>
+-    </option>
+-  </component>
+-  <component name="GenerateSignedApkSettings">
+-    <option name="KEY_STORE_PATH" value="$PROJECT_DIR$/findme_key" />
+-    <option name="KEY_ALIAS" value="key0" />
+-    <option name="REMEMBER_PASSWORDS" value="true" />
+-    <option name="BUILD_TARGET_KEY" value="apk" />
+-  </component>
+-  <component name="Git.Settings">
+-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-    <option name="RESET_MODE" value="SOFT" />
+-  </component>
+-  <component name="GitSEFilterConfiguration">
+-    <file-type-list>
+-      <filtered-out-file-type name="LOCAL_BRANCH" />
+-      <filtered-out-file-type name="REMOTE_BRANCH" />
+-      <filtered-out-file-type name="TAG" />
+-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+-    </file-type-list>
+-  </component>
+-  <component name="MarkdownSettingsMigration">
+-    <option name="stateVersion" value="1" />
+-  </component>
+-  <component name="ProjectId" id="2156v2YPEHm8Ej5IfdPg24NkXwS" />
+-  <component name="ProjectViewState">
+-    <option name="hideEmptyMiddlePackages" value="true" />
+-    <option name="showLibraryContents" value="true" />
+-  </component>
+-  <component name="PropertiesComponent">
+-    <property name="ApkExportedModule" value="FindMe-App.app" />
+-    <property name="ExportApk.ApkPath" value="$USER_HOME$" />
+-    <property name="ExportApk.BuildVariants" value="release" />
+-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+-    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+-    <property name="cidr.known.project.marker" value="true" />
+-    <property name="dart.analysis.tool.window.visible" value="false" />
+-    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable-mdpi" />
+-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BoostSearch" />
+-    <property name="memory.settings.postsync.last.time.stamp" value="1639063433528" />
+-    <property name="ml.local.models.training.notification.expired" value="true" />
+-    <property name="project.structure.last.edited" value="Project" />
+-    <property name="project.structure.proportion" value="0.17" />
+-    <property name="project.structure.side.proportion" value="0.2" />
+-    <property name="settings.editor.selected.configurable" value="experimental" />
+-    <property name="show.migrate.to.gradle.popup" value="false" />
+-  </component>
+-  <component name="RecentsManager">
+-    <key name="CopyFile.RECENT_KEYS">
+-      <recent name="C:\Users\kgy55\AndroidStudioProjects\real_FindMe\app\src\main\res\drawable-mdpi" />
+-    </key>
+-    <key name="android.template.-1239519126">
+-      <recent name="com.example.findme.login" />
+-    </key>
+-  </component>
+-  <component name="RunManager" selected="Android App.app">
+-    <configuration name="FindMe-App.FindMe.app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+-      <module name="FindMe-App.FindMe.app" />
+-      <option name="DEPLOY" value="true" />
+-      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+-      <option name="DEPLOY_AS_INSTANT" value="false" />
+-      <option name="ARTIFACT_NAME" value="" />
+-      <option name="PM_INSTALL_OPTIONS" value="" />
+-      <option name="ALL_USERS" value="false" />
+-      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+-      <option name="CLEAR_APP_STORAGE" value="false" />
+-      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+-      <option name="MODE" value="default_activity" />
+-      <option name="CLEAR_LOGCAT" value="false" />
+-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+-      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+-      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+-      <option name="DEBUGGER_TYPE" value="Auto" />
+-      <Auto>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Auto>
+-      <Hybrid>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Hybrid>
+-      <Java />
+-      <Native>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Native>
+-      <Profilers>
+-        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+-        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+-        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+-        <option name="PROFILING_MODE" value="NOT_SET" />
+-      </Profilers>
+-      <option name="DEEP_LINK" value="" />
+-      <option name="ACTIVITY_CLASS" value="" />
+-      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+-      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+-      <method v="2">
+-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+-      </method>
+-    </configuration>
+-    <configuration name="FindMe-App.app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+-      <module name="FindMe-App.app" />
+-      <option name="DEPLOY" value="true" />
+-      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+-      <option name="DEPLOY_AS_INSTANT" value="false" />
+-      <option name="ARTIFACT_NAME" value="" />
+-      <option name="PM_INSTALL_OPTIONS" value="" />
+-      <option name="ALL_USERS" value="false" />
+-      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+-      <option name="CLEAR_APP_STORAGE" value="false" />
+-      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+-      <option name="MODE" value="default_activity" />
+-      <option name="CLEAR_LOGCAT" value="false" />
+-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+-      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+-      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+-      <option name="DEBUGGER_TYPE" value="Auto" />
+-      <Auto>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Auto>
+-      <Hybrid>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Hybrid>
+-      <Java />
+-      <Native>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Native>
+-      <Profilers>
+-        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+-        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+-        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+-        <option name="PROFILING_MODE" value="NOT_SET" />
+-      </Profilers>
+-      <option name="DEEP_LINK" value="" />
+-      <option name="ACTIVITY_CLASS" value="" />
+-      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+-      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+-      <method v="2">
+-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+-      </method>
+-    </configuration>
+-    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+-      <module name="FindMe-App.app.main" />
+-      <option name="DEPLOY" value="true" />
+-      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+-      <option name="DEPLOY_AS_INSTANT" value="false" />
+-      <option name="ARTIFACT_NAME" value="" />
+-      <option name="PM_INSTALL_OPTIONS" value="" />
+-      <option name="ALL_USERS" value="false" />
+-      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+-      <option name="CLEAR_APP_STORAGE" value="false" />
+-      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+-      <option name="MODE" value="default_activity" />
+-      <option name="CLEAR_LOGCAT" value="false" />
+-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+-      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+-      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+-      <option name="DEBUGGER_TYPE" value="Auto" />
+-      <Auto>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Auto>
+-      <Hybrid>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Hybrid>
+-      <Java />
+-      <Native>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Native>
+-      <Profilers>
+-        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+-        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+-        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+-        <option name="PROFILING_MODE" value="NOT_SET" />
+-      </Profilers>
+-      <option name="DEEP_LINK" value="" />
+-      <option name="ACTIVITY_CLASS" value="" />
+-      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+-      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+-      <method v="2">
+-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+-      </method>
+-    </configuration>
+-    <configuration name="real_FindMe.FindMe.app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+-      <option name="DEPLOY" value="true" />
+-      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+-      <option name="DEPLOY_AS_INSTANT" value="false" />
+-      <option name="ARTIFACT_NAME" value="" />
+-      <option name="PM_INSTALL_OPTIONS" value="" />
+-      <option name="ALL_USERS" value="false" />
+-      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+-      <option name="CLEAR_APP_STORAGE" value="false" />
+-      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+-      <option name="MODE" value="default_activity" />
+-      <option name="CLEAR_LOGCAT" value="false" />
+-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+-      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+-      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+-      <option name="DEBUGGER_TYPE" value="Auto" />
+-      <Auto>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Auto>
+-      <Hybrid>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Hybrid>
+-      <Java />
+-      <Native>
+-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+-        <option name="SHOW_STATIC_VARS" value="true" />
+-        <option name="WORKING_DIR" value="" />
+-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+-      </Native>
+-      <Profilers>
+-        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+-        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+-        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+-        <option name="PROFILING_MODE" value="NOT_SET" />
+-      </Profilers>
+-      <option name="DEEP_LINK" value="" />
+-      <option name="ACTIVITY_CLASS" value="" />
+-      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+-      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+-      <method v="2">
+-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+-      </method>
+-    </configuration>
+-  </component>
+-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+-  <component name="TaskManager">
+-    <task id="LOCAL-00001" summary="commit before merge">
+-      <created>1637217828784</created>
+-      <option name="number" value="00001" />
+-      <option name="presentableId" value="LOCAL-00001" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1637217828784</updated>
+-    </task>
+-    <task active="true" id="Default" summary="Default task">
+-      <changelist id="e29ab234-16e8-433a-84fd-a52bbeb857e9" name="Changes" comment="" />
+-      <created>1637218834130</created>
+-      <option name="number" value="Default" />
+-      <option name="presentableId" value="Default" />
+-      <updated>1637218834130</updated>
+-    </task>
+-    <task id="LOCAL-00002" summary="sync post with firebase">
+-      <created>1637233157084</created>
+-      <option name="number" value="00002" />
+-      <option name="presentableId" value="LOCAL-00002" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1637233157084</updated>
+-    </task>
+-    <task id="LOCAL-00003" summary="resolve conflict wish to pull final version">
+-      <created>1637236243951</created>
+-      <option name="number" value="00003" />
+-      <option name="presentableId" value="LOCAL-00003" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1637236243951</updated>
+-    </task>
+-    <task id="LOCAL-00004" summary="chore : gitignore 수정">
+-      <created>1667924283849</created>
+-      <option name="number" value="00004" />
+-      <option name="presentableId" value="LOCAL-00004" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1667924283849</updated>
+-    </task>
+-    <task id="LOCAL-00005" summary="chore : gradle 버전 업데이트">
+-      <created>1667924497206</created>
+-      <option name="number" value="00005" />
+-      <option name="presentableId" value="LOCAL-00005" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1667924497206</updated>
+-    </task>
+-    <task id="LOCAL-00006" summary="fix : 버전 문제 해결&#10;&#10;- 프로젝트 수준 gradle에서 google-service와 gradle 버전이 맞지 않아서 컴파일이 안되던 문제 해결함. 버전을 최신으로 올려주었음.&#10;- 이전 파일에서 gitignore을 제대로 설정하지 않아서 idea 파일들이 중구난방으로 섞여있었음. git rm --cached 명령으로 이것도 함께 해결함.">
+-      <created>1667925706613</created>
+-      <option name="number" value="00006" />
+-      <option name="presentableId" value="LOCAL-00006" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1667925706613</updated>
+-    </task>
+-    <task id="LOCAL-00007" summary="fix : 패키지 이동&#10;&#10;- View에 모든 로직이 몰아져있는 상태라서, 우선 기능별로 뷰를 분리한 후 차근차근 계층을 나누기로 했다.&#10;- warning이 너무 많아서 차차 해결할 예정&#10;- 일단 통신하는 클래스를 보고 다시 firebase를 복원해야한다.">
+-      <created>1667927735511</created>
+-      <option name="number" value="00007" />
+-      <option name="presentableId" value="LOCAL-00007" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1667927735511</updated>
+-    </task>
+-    <task id="LOCAL-00008" summary="fix : Fragment 생성&#10;&#10;Login Activity에서 상태에 따라 회원가입, 로그인, 메인으로 돌아가기 세가지의 선택지가 있는데, 이중 로그인과 회원가입을 fragment로 구현할 예정">
+-      <created>1667968806211</created>
+-      <option name="number" value="00008" />
+-      <option name="presentableId" value="LOCAL-00008" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1667968806211</updated>
+-    </task>
+-    <task id="LOCAL-00009" summary="featrue : 로그인/회원가입 Fragment 생성&#10;&#10;Login Activity에서 상태에 따라 회원가입, 로그인, 메인으로 돌아가기 세가지의 선택지가 있는데, 이중 로그인과 회원가입을 fragment로 구현할 예정">
+-      <created>1667974544406</created>
+-      <option name="number" value="00009" />
+-      <option name="presentableId" value="LOCAL-00009" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1667974544406</updated>
+-    </task>
+-    <task id="LOCAL-00010" summary="featrue : 로그인 Fragment 흐름 구현&#10;&#10;- 콜백으로 액티비티와 통신">
+-      <created>1668016081094</created>
+-      <option name="number" value="00010" />
+-      <option name="presentableId" value="LOCAL-00010" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1668016081094</updated>
+-    </task>
+-    <task id="LOCAL-00011" summary="featrue : 회원가입 Fragment 흐름 구현&#10;&#10;- 콜백으로 액티비티와 통신">
+-      <created>1668083493281</created>
+-      <option name="number" value="00011" />
+-      <option name="presentableId" value="LOCAL-00011" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1668083493281</updated>
+-    </task>
+-    <task id="LOCAL-00012" summary="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함">
+-      <created>1668088829572</created>
+-      <option name="number" value="00012" />
+-      <option name="presentableId" value="LOCAL-00012" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1668088829572</updated>
+-    </task>
+-    <task id="LOCAL-00013" summary="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함">
+-      <created>1668088877560</created>
+-      <option name="number" value="00013" />
+-      <option name="presentableId" value="LOCAL-00013" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1668088877560</updated>
+-    </task>
+-    <task id="LOCAL-00014" summary="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기">
+-      <created>1668091443972</created>
+-      <option name="number" value="00014" />
+-      <option name="presentableId" value="LOCAL-00014" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1668091443972</updated>
+-    </task>
+-    <task id="LOCAL-00015" summary="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기">
+-      <created>1668148813220</created>
+-      <option name="number" value="00015" />
+-      <option name="presentableId" value="LOCAL-00015" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1668148813220</updated>
+-    </task>
+-    <option name="localTasksCounter" value="16" />
+-    <servers />
+-  </component>
+-  <component name="Vcs.Log.Tabs.Properties">
+-    <option name="TAB_STATES">
+-      <map>
+-        <entry key="MAIN">
+-          <value>
+-            <State>
+-              <option name="FILTERS">
+-                <map>
+-                  <entry key="branch">
+-                    <value>
+-                      <list>
+-                        <option value="feature/login" />
+-                      </list>
+-                    </value>
+-                  </entry>
+-                </map>
+-              </option>
+-            </State>
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
+-  </component>
+-  <component name="VcsManagerConfiguration">
+-    <MESSAGE value="commit before merge" />
+-    <MESSAGE value="sync post with firebase" />
+-    <MESSAGE value="merged all" />
+-    <MESSAGE value="resolve conflict wish to pull final version" />
+-    <MESSAGE value="chore : gitignore 수정" />
+-    <MESSAGE value="chore : gradle 버전 업데이트" />
+-    <MESSAGE value="fix : 버전 문제 해결&#10;&#10;- 프로젝트 수준 gradle에서 google-service와 gradle 버전이 맞지 않아서 컴파일이 안되던 문제 해결함. 버전을 최신으로 올려주었음.&#10;- 이전 파일에서 gitignore을 제대로 설정하지 않아서 idea 파일들이 중구난방으로 섞여있었음. git rm --cached 명령으로 이것도 함께 해결함." />
+-    <MESSAGE value="fix : 패키지 이동&#10;&#10;- View에 모든 로직이 몰아져있는 상태라서, 우선 기능별로 뷰를 분리한 후 차근차근 계층을 나누기로 했다." />
+-    <MESSAGE value="fix : 패키지 이동&#10;&#10;- View에 모든 로직이 몰아져있는 상태라서, 우선 기능별로 뷰를 분리한 후 차근차근 계층을 나누기로 했다.&#10;- warning이 너무 많아서 차차 해결할 예정&#10;- 일단 통신하는 클래스를 보고 다시 firebase를 복원해야한다." />
+-    <MESSAGE value="fix : Fragment 생성&#10;&#10;Login Activity에서 상태에 따라 회원가입, 로그인, 메인으로 돌아가기 세가지의 선택지가 있는데, 이중 로그인과 회원가입을 fragment로 구현할 예정" />
+-    <MESSAGE value="featrue : 로그인/회원가입 Fragment 생성&#10;&#10;Login Activity에서 상태에 따라 회원가입, 로그인, 메인으로 돌아가기 세가지의 선택지가 있는데, 이중 로그인과 회원가입을 fragment로 구현할 예정" />
+-    <MESSAGE value="featrue : 로그인 Fragment 흐름 구현&#10;&#10;- 콜백으로 액티비티와 통신" />
+-    <MESSAGE value="featrue : 회원가입 Fragment 흐름 구현&#10;&#10;- 콜백으로 액티비티와 통신" />
+-    <MESSAGE value="featrue : 파일을 Kotlin으로 변경&#10;&#10;- 안드로이드 마법사 사용해서 간편하게 추가하고 바꿀 수 있었음&#10;- 뷰모델 적용 가능해짐&#10;- livedata observe 사용해서 UI부터 수정함" />
+-    <MESSAGE value="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기" />
+-    <option name="LAST_COMMIT_MESSAGE" value="featrue : Login Fragment에 뷰모델 적용&#10;&#10;- viewModelScope로 간편한 비동기 작업 가능해짐&#10;- 뷰에서 로직 덜어냈으나, 아직 textWatcher가 지저분해서 더 분리 필요함&#10;- 로그인 시간 초과시 실패로 처리하도록 했음&#10;- 내일 RegisterFragment.kt에도 뷰모델 적용 통해 역할분리 진행하기" />
+-  </component>
+-  <component name="XDebuggerManager">
+-    <breakpoint-manager>
+-      <breakpoints>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>298</line>
+-          <option name="timeStamp" value="3" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>304</line>
+-          <option name="timeStamp" value="4" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>286</line>
+-          <option name="timeStamp" value="5" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>306</line>
+-          <option name="timeStamp" value="6" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>312</line>
+-          <option name="timeStamp" value="7" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>126</line>
+-          <option name="timeStamp" value="26" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>125</line>
+-          <option name="timeStamp" value="27" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>139</line>
+-          <option name="timeStamp" value="29" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>142</line>
+-          <option name="timeStamp" value="30" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/findme/game/GameActivity.java</url>
+-          <line>144</line>
+-          <option name="timeStamp" value="31" />
+-        </line-breakpoint>
+-      </breakpoints>
+-    </breakpoint-manager>
+-    <watches-manager>
+-      <configuration name="app">
+-        <watch expression="this.this$0" custom="com.google.android.gms.tasks.OnFailureListener" />
+-      </configuration>
+-    </watches-manager>
+-  </component>
+-</project>
+\ No newline at end of file
