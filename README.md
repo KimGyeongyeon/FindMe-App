@@ -2,12 +2,26 @@
 
 ## 프로젝트 소개
 
-FindMe는 잃어버린 반려동물을 찾기 위한 플랫폼입니다.
-잃어버린 반려동물의 장소와 사진을 등록하면, 주변 사람들이 정보를 보고 `NOT HERE` 과 `HERE` 리포트를 보내줍니다.
+🦮**FindMe**는 잃어버린 애완동물을 찾기 위해 크라우드 소싱을 이용하는 서비스입니다.
 
-허위 신고를 걸러내는 게임을 추가해서, 집 밖에 나가지 않고도 잃어버린 반려동물을 도울 수 있도록 했고, 제보자는 더 정확한 신고 결과를 얻을 수 있도록 했습니다.
+동물을 잃어버린 사람이 실종 장소와 함께 profile을 업로드하면, 유저들은 해당 제보를 지도 위에서 볼 수 있습니다.
+유저는 찾을 동물을 선택한 후, 주변을 돌면서 두 가지 활동을 할 수 있습니다.
 
-유저 테스트 결과 `HERE` 리포트 제보 접수 이후 10분 이내에 모든 사람들이 타깃을 찾아냈으며, 실종 반려동물을 찾는 일에 관심이 없던 사람들도 해당 서비스와 함께라면 참여할 의사가 있다는 긍정적인 반응을 보였습니다. ( 2.95 → 4.04 / 5.0점 만점)
+- a) 애완동물이 없다 → Not here 제보
+- b) 애완동물이 있다 → Here 제보 & 사진 촬영
+
+🗺️ 제보는 지도 위에 시각적으로 표시됩니다.
+
+최근 5분간의 Not here 제보는 heatmap으로 표시되어 찾아볼 범위를 줄이는데 도움을 줍니다. 
+Here 제보는 지도에 마커를 띄워서 표시하며, 마커를 클릭하면 사진, 촬영일시, 촬영장소를 조회할 수 있습니다.
+
+*🧪*23명의 테스터를 모집하여 인형을 찾는 테스트를 진행한 결과…
+
+- 35분만에 인형을 찾아냈습니다.
+- 유저는 평균 5.8개의 here report를 작성했습니다.
+- 참가자 중 실종 동물을 찾는데 관심있는 사람은 60% 뿐이었지만, 이 서비스와 함께라면 90% 이상이 실종 동물을 찾는데 나서겠다고 밝혔습니다.
+- ‘게임을 하는 것 같아서 재미있다.’ ‘실종 동물을 돕는데에 많은 노력이 필요하지 않다’가 주요 이유였습니다.
+- `HERE` 리포트 제보 접수 이후 10분 이내에 모든 사람들이 타깃을 찾아냈으며, 실종 반려동물을 찾는 일에 관심이 없던 사람들도 해당 서비스와 함께라면 참여할 의사가 있다는 긍정적인 반응을 보였습니다. ( 2.95 → 4.04 / 5.0점 만점)
 
 **프로토 타입 체험하기** ➡ [Go](https://www.figma.com/proto/N8pLIRHiRh46WvIjShYPYu/FindMe?scaling=scale-down&page-id=0%3A1&starting-point-node-id=16%3A22&show-proto-sidebar=1&node-id=16%3A22)
 
@@ -33,7 +47,7 @@ FindMe는 잃어버린 반려동물을 찾기 위한 플랫폼입니다.
 ## 기능 소개
 
 
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cd96850c-82fb-446d-9092-c2676af186d4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221108%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221108T065123Z&X-Amz-Expires=86400&X-Amz-Signature=c88fb09c449d0740a87145c072156fb38019027309d2e964037ca6c6b6276c7a&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
+<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cd96850c-82fb-446d-9092-c2676af186d4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T145238Z&X-Amz-Expires=86400&X-Amz-Signature=e2276f6bc7fdff48d6bdec3b9606a0d2ac80e11546c905645972b271e83c4c10&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
 
 
 
@@ -52,7 +66,7 @@ FindMe는 잃어버린 반려동물을 찾기 위한 플랫폼입니다.
 > 
 
 <div text-align="center">
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0df41a49-2387-4b1d-b02e-f79f5a235027/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221108%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221108T065416Z&X-Amz-Expires=86400&X-Amz-Signature=93839b283e2e80b7fcca1cd6e0f7a2aebb0773457a2463165f388529bb5f09aa&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
+<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0df41a49-2387-4b1d-b02e-f79f5a235027/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T145318Z&X-Amz-Expires=86400&X-Amz-Signature=cabe877145761314ac6902d2164874fd9daeb7d6a9c0b0af138d713c2426811c&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/20278fac-471c-4b02-acbd-1eab2191f360/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221108%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221108T065424Z&X-Amz-Expires=86400&X-Amz-Signature=1a849bdf85d11372fdde89a7603731e2dc6b83b2de43788ea34db14ab44dbb8f&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
 </div>
 
