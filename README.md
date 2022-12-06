@@ -40,14 +40,14 @@ Here 제보는 지도에 마커를 띄워서 표시하며, 마커를 클릭하�
 
 |[김경연](https://github.com/KimGyeongyeon)|[김철환](https://github.com/kadiace)|[박준영](https://github.com/jjjunyeong)|[신정윤](https://github.com/shinbastien)|
 |:--:|:--:|:--:|:--:|
-상세정보 화면 담당|firebase 스키마 설계<br>게임 기능 구현|지도 화면 담당<br>서버 관리 어플 개발|로그인 화면 개발<br>Here post 화면 개발<br>기획 매니징
+User motivation 전략 수립<br>상세정보 화면 담당|firebase 스키마 설계<br>게임 기능 구현|지도 화면 담당<br>서버 관리 어플 개발|로그인 화면 개발<br>Here post 화면 개발<br>기획 매니징
 
 ---
 
 ## 기능 소개
 
 
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cd96850c-82fb-446d-9092-c2676af186d4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T145238Z&X-Amz-Expires=86400&X-Amz-Signature=e2276f6bc7fdff48d6bdec3b9606a0d2ac80e11546c905645972b271e83c4c10&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
+<img src="https://user-images.githubusercontent.com/67995865/205860396-38e17ad7-0904-42f8-8f15-5c3b50ce3b03.png" height="300px" >
 
 
 
@@ -57,7 +57,7 @@ Here 제보는 지도에 마커를 띄워서 표시하며, 마커를 클릭하�
 우측 하단 버튼을 누르면 게임을 하거나, 실종 신고를 등록할 수 있습니다.
 > 
 
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5aadadab-6b93-45ae-956a-6769b947fd25/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221108%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221108T065436Z&X-Amz-Expires=86400&X-Amz-Signature=2d7d4cf932055639f04168f6f3701e508583e490c686430ba224f11bb6249d8f&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
+<img src="https://user-images.githubusercontent.com/67995865/205860094-675fadb0-9c2a-4cb4-9c23-1ae523c88e49.png" height="300px" >
 
 ### Pet detail page
 
@@ -66,8 +66,8 @@ Here 제보는 지도에 마커를 띄워서 표시하며, 마커를 클릭하�
 > 
 
 <div text-align="center">
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0df41a49-2387-4b1d-b02e-f79f5a235027/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T145318Z&X-Amz-Expires=86400&X-Amz-Signature=cabe877145761314ac6902d2164874fd9daeb7d6a9c0b0af138d713c2426811c&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/20278fac-471c-4b02-acbd-1eab2191f360/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221108%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221108T065424Z&X-Amz-Expires=86400&X-Amz-Signature=1a849bdf85d11372fdde89a7603731e2dc6b83b2de43788ea34db14ab44dbb8f&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
+<img src="https://user-images.githubusercontent.com/67995865/205860127-ec81aee3-74d7-4043-bb2a-e618cfbd5c10.png" height="300px" >
+<img src="https://user-images.githubusercontent.com/67995865/205860145-cb1ecdcb-405e-43da-bd7f-9899ce1df096.png" height="300px" >
 </div>
 
 ### Pet detail Map
@@ -77,7 +77,7 @@ Here 제보는 지도에 마커를 띄워서 표시하며, 마커를 클릭하�
 만약 주변을 수색하다가 잃어버린 동물을 찾게되면 이 페이지에서 `Here report` 를 사진과 함께 제출합니다. Here report는 빨간색 마커**📍** 형태로 표시되며, 클릭하면 사진과 시간, 신고자 이름을 볼 수 있습니다.
 > 
 
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/40fe8ef3-9d46-4d5e-aba1-b49c585de77d/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221108%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221108T065336Z&X-Amz-Expires=86400&X-Amz-Signature=e0a1ddf9091a80b78aa07b7b12534bc5bd1f71b796e5b2648fd0dd5fe50ec2db&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject" height="300px" >
+<img src="https://user-images.githubusercontent.com/67995865/205860120-a8e029cc-d055-4390-aee9-af614b817210.png" height="300px" >
 
 ### Game page
 
@@ -94,3 +94,4 @@ Here 제보는 지도에 마커를 띄워서 표시하며, 마커를 클릭하�
 > Missing pet reports are already uploaded in the App.  
 > Game data randomize not implemented.  
 > Notification message is send to all users using the app at the same time.  
+
